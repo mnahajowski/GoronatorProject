@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Maps</title>
+
+<!--    link to map library with styles-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+</head>
+<body>
+
+<!--    link to map library with code-->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+
+<!--    add an empty div-->
+    <div id="map" style="height: 360px; width: 360px"></div>
+
+<!--    import maps module-->
+    <script type="text/javascript" src="{{url_for('static', filename='maps.js')}}"></script>
+
+<!--    initialize map and add markers-->
+    <script>
+        initMap(51.505, -0.09, 'map')
+        addMarker(51.5, -0.09, "Marker name");
+    </script>
+</body>
+</html>
