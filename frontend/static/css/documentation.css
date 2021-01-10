@@ -1,0 +1,54 @@
+#wrapper {
+    position: absolute;
+    top: 8px;
+    left: 25vw;
+    width: 50vw;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+
+.grid-elem {
+    position: relative;
+    flex: 1 1 0;
+    margin: 8px 4px 0;
+    vertical-align: middle;
+    width: 24.9%;
+}
+
+.grid-elem img {
+    position: absolute;
+    width: 20%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+div .grid-elem {
+    background-color: #222222;
+}
+
+form {
+    display: none;
+}
+
+.menu {
+    background-color: #ddd;
+    width: 150px;
+    position: absolute;
+    top: 0;
+    left: 8px;
+    height: 100vh;
+}
+
+.menu a {
+    color: black;
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    background-color: #ccc;
+}

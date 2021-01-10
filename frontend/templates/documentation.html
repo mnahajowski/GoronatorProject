@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Documentation</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/documentation.css') }}">
+</head>
+<body>
+    <div class="menu">
+        {% for route in routes %}
+        <a href="loacalhost:12345/routes/{{route[1]}}/documentation/">{{ route[0] }}</a>
+        {% endfor %}
+    </div>
+
+    <div id="wrapper">
+        <div class="grid-elem">
+            <img src="{{ url_for('static', filename='images/plus-solid.svg') }}"
+                 onclick="document.getElementById('file').click()">
+            <form method="POST" action="/routes/{{route_id}}/documentation/" enctype="multipart/form-data">
+                <input id="file" type="file" name="file" onchange="form.submit()" accept="image/*">
+            </form>
+        </div>
+
+        {% for image_path in images %}
+        <img class="grid-elem" src="{{ url_for('static', filename='images/' + image_path) }}">
+        {% endfor %}
+    </div>
+
+</body>
+</html>
