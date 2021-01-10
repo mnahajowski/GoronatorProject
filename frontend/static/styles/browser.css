@@ -1,0 +1,52 @@
+.form-control.input-lg.bigSearch{
+    font-size:25pt;
+    width:50%;
+    margin-top:10%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.form-control.input-lg.smallSearch{
+    font-size:12pt;
+    width:50%;
+    margin-top:1%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.btn.btn-default.btn-lg.closeButton {
+    position: absolute;
+    top: 1%;
+    right: 3%;
+}
+
+.btn.btn-primary.btn-lg.addButton {
+    position: absolute;
+    width: 20%;
+    height: 15%;
+    top: 60%;
+    left: 10%;
+}
+
+.segmentDescription {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+}
+
+.importantLabel {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.normalLabel {
+    font-size: 35px;
+}
+
+#map {
+    height: 50vh;
+    width: 50vh;
+    position: absolute;
+    left: 60%;
+    top: 20%;
+}

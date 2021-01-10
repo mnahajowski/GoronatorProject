@@ -23,7 +23,7 @@ def index():
 def segmentView():
     #data = requests.get('http://localhost:5000/GetPoints')
     #print(data.content)
-    request.urlopen()
+    #request.urlopen()
     #request.
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200], ['Maniak - Rysy', 2, 2.3, 1200]]
     return render_template('segmentView.html', data=myList)
