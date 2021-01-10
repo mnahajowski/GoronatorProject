@@ -53,7 +53,7 @@ def documentation(route_id):
             return redirect(request.url)
 
     else:
-        images = ['background.jpg'] * 5  # get images
+        images = ['sample_img.jpg'] * 5  # get images
         routes = [("Super trasa 1", 1)] * 6  # get routes + ids
         return render_template('documentation.html', routes=routes, route_id=route_id, images=images)
 
