@@ -25,10 +25,19 @@ def segmentView():
     #print(data.content)
     #request.urlopen()
     #request.
-    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200], ['Maniak - Rysy', 2, 2.3, 1200]]
-    return render_template('segmentView.html', data=myList)
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    #points = [[51.5, -0.09], [52.0, -0.10]]
+    points = [[51.5, -0.09]]
+    map_init = [sum(x[0] for x in points)/len(points), sum(x[1] for x in points)/len(points)]
+    if len(points) == 1:
+        otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
+    else:
+        otherSegments = None
 
-@app.route("/routes/<route_id>/documentation/", methods=['GET', 'POST'])
+    return render_template('segmentView.html', data=myList, points=points, map_init=map_init, correlledSegments=otherSegments)
+
+@app.route("/routes/<route_id>/documentation", methods=['GET', 'POST'])
 def documentation(route_id):
     if request.method == 'POST':
         if 'file' not in request.files:
