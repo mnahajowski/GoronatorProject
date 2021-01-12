@@ -97,3 +97,12 @@ form {
 .menu a:hover {
     background-color: #ccc;
 }
+
+.share-icon {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    top: 32px;
+    right: 32px;
+    cursor: pointer;
+}
