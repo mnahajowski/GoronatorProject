@@ -33,7 +33,7 @@ function initSecondaryMap(divId) {
     }).addTo(secondaryMap);
 
     for (let marker of markersOld)
-        marker.addTo(secondaryMap)
+        addMarker(marker[0], marker[1], marker[2], marker[3], true)
 }
 
 
@@ -58,7 +58,7 @@ function addMarker(x, y, text, color, toNew) {
         markersNew.push(marker);
         marker.addTo(secondaryMap);
     } else {
-        markersOld.push(marker);
+        markersOld.push([x, y, text, color]);
         marker.addTo(mainMap);
     }
 }
