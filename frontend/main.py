@@ -15,12 +15,30 @@ app.config['SECRET_KEY'] = '7d441f27d441f27567d441f2b6176a'
 
 @app.route("/")
 def index():
-    myList = ['Morskie Oko - Rysy', 'Adam', 'Michał']
+    myList = ['Morskie Oko - Rysy', 'Morskie Oko', 'Rysy']
     return render_template('index.html', data=myList)
 
 
 @app.route("/SegmentView")
 def segmentView():
+    #data = requests.get('http://localhost:5000/GetPoints')
+    #print(data.content)
+    #request.urlopen()
+    #request.
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    points = [[51.5, -0.09], [52.0, -0.10]]
+    #points = [[51.5, -0.09]]
+    map_init = [sum(x[0] for x in points)/len(points), sum(x[1] for x in points)/len(points)]
+    if len(points) == 1:
+        otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
+    else:
+        otherSegments = None
+
+    return render_template('segmentView.html', data=myList, points=points, map_init=map_init, correlledSegments=otherSegments)
+
+@app.route("/RouteView")
+def routeView():
     #data = requests.get('http://localhost:5000/GetPoints')
     #print(data.content)
     #request.urlopen()
@@ -35,7 +53,7 @@ def segmentView():
     else:
         otherSegments = None
 
-    return render_template('segmentView.html', data=myList, points=points, map_init=map_init, correlledSegments=otherSegments)
+    return render_template('planRouteView.html', data=myList, points=points, map_init=map_init, correlledSegments=otherSegments)
 
 @app.route("/routes/<route_id>/documentation", methods=['GET', 'POST'])
 def documentation(route_id):

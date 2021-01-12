@@ -14,24 +14,25 @@
     margin-right:auto;
 }
 
-.btn.btn-default.btn-lg.closeButton {
+.btn.btn-default.btn-lg.closeButtonRight {
     position: absolute;
-    top: 1%;
-    right: 3%;
+    top: 32px;
+    right: 32px;
+}
+
+button img {
+     width: 32px;
+}
+.btn.btn-default.btn-lg.closeButtonLeft {
+    position: absolute;
+    top: 32px;
+    left: 32px;
 }
 
 .btn.btn-primary.btn-lg.addButton {
-    position: absolute;
-    width: 20%;
+    margin-top: 128px;
+    width: 50%;
     height: 15%;
-    top: 60%;
-    left: 10%;
-}
-
-.segmentDescription {
-    position: absolute;
-    top: 20%;
-    left: 10%;
 }
 
 .importantLabel {
@@ -46,7 +47,79 @@
 #map {
     height: 50vh;
     width: 50vh;
-    position: absolute;
-    left: 60%;
-    top: 20%;
+}
+
+.plusButton {
+    height: 1em;
+    width: 1em;
+}
+
+.listItems {
+    text-align: center;
+    border: 3px solid black;
+    box-sizing: border-box;
+}
+
+.flexElement ul {
+
+    margin-top: 1.5em;
+    list-style-type: none;
+}
+
+.listItems a {
+    height: 2.5em;
+}
+.flexElement ul li p{
+    background-color: white;
+    line-height: 2.5em;
+    padding: 0.2em 1em;
+    border: 1px solid black;
+    box-sizing: border-box;
+    display: inline;
+}
+
+
+.arrowImg {
+    height: 2em;
+    width: 2em;
+}
+
+.flexHolder {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    width: 90vw;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flexElement {
+    flex: 1 1 0;
+    margin: 8px 16px 0;
+    vertical-align: top;
+    width: 99%;
+}
+
+.mediumList {
+    margin: 8px 16px 0 0;
+}
+
+.segmentList {
+    margin: 8px 0 0 16px;
+}
+.routeHeader {
+    margin: 32px 0 0 0;
+    text-align: center;
+}
+
+@media all and (max-width: 1250px) {
+    .flexHolder {
+        flex-flow:column wrap;
+    }
+    .flexElement {
+        flex: 1 1 auto;
+        margin-top: 10%;
+        margin-bottom: 10%;
+    }
 }

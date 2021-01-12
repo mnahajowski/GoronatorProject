@@ -1,63 +1,66 @@
 {% extends "base.html" %}
 {% block title %}Góronator{% endblock %}
-{% block styles %}<link rel="stylesheet" href="/static/styles/browser.css">{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/styles/browser.css">{% endblock %}
 {% block content %}
 
-<div class="ui-widget">
-    <label for="tags"></label>
-    <input class="form-control input-lg smallSearch" id="tags" name="cli" placeholder="Wyszukaj...">
-</div>
-<button class="btn btn-default btn-lg closeButton">
-    <img src="/static/images/closeButtonImg.png" width="20" /> Cofnij
-</button>
-
-    <div class="segmentDescription">
-        <div class="importantLabel">
-            {{data[0][0]}}
-        </div>
-    {% if points.__len__() > 1 %}
-            <div class="normalLabel">
-                {{data[0][1]}} pkt GOT | {{data[0][2]}} km <-> | {{data[0][3]}} m ^v
-            </div>
-    {%  else %}
-            Lista skorelowanych punktów
-            <div class="list-group">
-                {% for segment in correlledSegments %}
-                <a href="/" class="list-group-item list-group-item-action">{{ segment }}</a>
-            {% endfor %}
-{# dodac paske przewijania skorelowanych punktow i takie tam           #}
+    <div class="ui-widget">
+        <label for="tags"></label>
+        <input class="form-control input-lg smallSearch" id="tags" name="cli" placeholder="Wyszukaj...">
     </div>
-
-    {% endif %}
-    </div>
-<button class="btn btn-primary btn-lg addButton">
-    Dodaj do nowej trasy
+    <button class="btn btn-default btn-lg closeButtonRight">
+        <img src="/static/images/closeButton.svg" width="20"/> Cofnij
     </button>
+    <div class="flexHolder">
+        <div class="flexElement">
+            <div class="segmentDescription">
+                <div class="importantLabel">
+                    {{ data[0][0] }}
+                </div>
+                {% if points.__len__() > 1 %}
+                    <div class="normalLabel">
+                        {{ data[0][1] }} pkt GOT | {{ data[0][2] }} km <-> | {{ data[0][3] }} m ^v
+                    </div>
+                {% else %}
+                    Lista skorelowanych punktów
+                    <div class="list-group">
+                        {% for segment in correlledSegments %}
+                            <a href="/" class="list-group-item list-group-item-action">{{ segment }}</a>
+                        {% endfor %}
+                        {# dodac paske przewijania skorelowanych punktow i takie tam           #}
+                    </div>
 
-<div id="map"></div>
+                {% endif %}
+            </div>
+            <button class="btn btn-primary btn-lg addButton">
+                Dodaj do nowej trasy
+            </button>
+        </div>
+        <div id="map" class="flexElement"></div>
+    </div>
 
-<script type="text/javascript" src="{{url_for('static', filename='js/maps.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/maps.js') }}"></script>
 
-<script>
-    initMap({{ map_init[0] }}, {{ map_init[1] }}, 'map')
-    for (var point of {{points}}) {
-        addMarker(point[0], point[1], "Marker name");
-    }
+    <script>
+        initMap({{ map_init[0] }}, {{ map_init[1] }}, 'map')
+        for (var point of {{points}}) {
+            addMarker(point[0], point[1], "Marker name");
+        }
 
-</script>
+    </script>
 
-<script>
+    <script>
         var myData = [];
         var mydata2 = {{data | tojson}};
-        mydata2.forEach(function(entry) {
+        mydata2.forEach(function (entry) {
             myData.push(entry[0]);
             console.log(entry[0]);
         });
         console.log(myData);
 
-</script>
+    </script>
 
-<script src="/static/js/index.js">
+    <script src="/static/js/index.js">
 
-</script>
+    </script>
 {% endblock %}

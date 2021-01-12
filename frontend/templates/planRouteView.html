@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Góronator{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/styles/browser.css">
+    <link rel="stylesheet" href="/static/styles/modal.css">
+{% endblock %}
+
+{% block content %}
+
+
+    <button class="btn btn-default btn-lg closeButtonLeft">
+        <img id="toModal" src="/static/images/closeButton.svg"/>
+    </button>
+    <button class="btn btn-default btn-lg closeButtonRight">
+        <img src="/static/images/saveButton.svg"/>
+    </button>
+    <div class="routeHeader">
+        <h1 class="importantLabel">Trasa 1</h1>
+        <p class="normalLabel">23 pkt GOT | 22.3km <-> | 1200 m ^v</p>
+    </div>
+    <div class="flexHolder">
+        <div class="flexElement segmentList">
+            <div class="listItems">
+                {% for segment in correlledSegments %}
+                    <a href="/" class="list-group-item list-group-item-action">{{ segment }}</a>
+                {% endfor %}
+                <a class="list-group-item list-group-item-action">
+                    <img class="plusButton" src="/static/images/plus-solid-black.svg"></a>
+            </div>
+
+        </div>
+        <div class="flexElement mediumList">
+            <ul>
+
+                {% for segment in correlledSegments %}
+                    <li>
+                        <img class="arrowImg" src="/static/images/arrow.svg">
+                        <p>{{ data[0][1] }} pkt GOT | {{ data[0][2] }} km <-> | {{ data[0][3] }} m ^v</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="map" class="flexElement"></div>
+    </div>
+
+
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/maps.js') }}"></script>
+
+    <script>
+        initMap({{ map_init[0] }}, {{ map_init[1] }}, 'map')
+        for (var point of {{points}}) {
+            addMarker(point[0], point[1], "Marker name");
+        }
+
+    </script>
+
+    <script>
+        var myData = [];
+        var mydata2 = {{data | tojson}};
+        mydata2.forEach(function (entry) {
+            myData.push(entry[0]);
+            console.log(entry[0]);
+        });
+        console.log(myData);
+
+    </script>
+
+    <script src="/static/js/index.js">
+
+    </script>
+
+        <div id="myModal" class="modal">
+
+        <div class="modal-content">
+            <span class="close"></span>
+            <h5>Czy chcesz wyjść?</h5>
+            <button class="deletebtn" onclick="location.href='/';">
+                Yes
+            </button></a>
+
+            <button class="cancelbtn" onclick="document.getElementById('myModal').style.display='none'">
+                No
+            </button>
+
+        </div>
+
+    </div>
+    <script src="/static/js/openModal.js">
+
+    </script>
+{% endblock %}
