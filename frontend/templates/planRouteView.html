@@ -2,12 +2,34 @@
 {% block title %}Góronator{% endblock %}
 {% block styles %}
     <link rel="stylesheet" href="/static/styles/browser.css">
-    <link rel="stylesheet" href="/static/styles/modal.css">
+    <link rel="stylesheet" href="/static/styles/routeView.css">
 {% endblock %}
 
 {% block content %}
 
+    <script>
+        function hideModal() {
+            document.getElementById("addSegmentModal").style.display = "none"
+        }
 
+        function showModal() {
+            document.getElementById("addSegmentModal").style.display = "block"
+        }
+    </script>
+    <script>
+        function changeBackground(newSegment) {
+            var segments = document.getElementsByClassName("correlledSegments");
+            for (var segment of segments) {
+                if(segment.text === newSegment) {
+                    segment.style.backgroundColor = "#44AAEE";
+                } else {
+                    segment.style.backgroundColor = "white";
+                }
+            }
+
+
+        }
+    </script>
     <button class="btn btn-default btn-lg closeButtonLeft">
         <img id="toModal" src="/static/images/closeButton.svg"/>
     </button>
@@ -24,7 +46,7 @@
                 {% for segment in correlledSegments %}
                     <a href="/" class="list-group-item list-group-item-action">{{ segment }}</a>
                 {% endfor %}
-                <a class="list-group-item list-group-item-action">
+                <a class="list-group-item list-group-item-action" onclick="showModal()">
                     <img class="plusButton" src="/static/images/plus-solid-black.svg"></a>
             </div>
 
@@ -44,6 +66,28 @@
     </div>
 
 
+<div id="addSegmentModal" class="modal">
+
+    <div class="modal-content">
+        <span class="close"></span>
+        <h5 class="borderredLabel">Skorelowane punkty</h5>
+        <div class="flexElement segmentList">
+            <div class="listItems">
+                {% for segment in correlledSegments %}
+                        <a class="list-group-item list-group-item-action correlledSegments"
+                           onclick="changeBackground('{{ segment }}')">{{ segment }}</a>
+                    {% endfor %}
+            </div>
+        </div>
+        <button class="deletebtn" onclick="location.href='/';">
+            Yes
+        </button>
+        <button class="cancelbtn" onclick="document.getElementById('addSegmentModal').style.display='none'">
+            No
+        </button>
+    </div>
+
+</div>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/maps.js') }}"></script>
 
@@ -52,40 +96,12 @@
         for (var point of {{points}}) {
             addMarker(point[0], point[1], "Marker name");
         }
-
-    </script>
-
-    <script>
-        var myData = [];
-        var mydata2 = {{data | tojson}};
-        mydata2.forEach(function (entry) {
-            myData.push(entry[0]);
-            console.log(entry[0]);
-        });
-        console.log(myData);
-
     </script>
 
     <script src="/static/js/index.js">
 
     </script>
-
-        <div id="myModal" class="modal">
-
-        <div class="modal-content">
-            <span class="close"></span>
-            <h5>Czy chcesz wyjść?</h5>
-            <button class="deletebtn" onclick="location.href='/';">
-                Yes
-            </button></a>
-
-            <button class="cancelbtn" onclick="document.getElementById('myModal').style.display='none'">
-                No
-            </button>
-
-        </div>
-
-    </div>
+{% include "exitModal.html" %}
     <script src="/static/js/openModal.js">
 
     </script>

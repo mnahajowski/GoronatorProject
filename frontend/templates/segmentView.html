@@ -8,8 +8,8 @@
         <label for="tags"></label>
         <input class="form-control input-lg smallSearch" id="tags" name="cli" placeholder="Wyszukaj...">
     </div>
-    <button class="btn btn-default btn-lg closeButtonRight">
-        <img src="/static/images/closeButton.svg" width="20"/> Cofnij
+    <button id="toModal" class="btn btn-default btn-lg closeButtonRight">
+        <img src="/static/images/closeButton.svg" width="20"/>
     </button>
     <div class="flexHolder">
         <div class="flexElement">
@@ -59,8 +59,12 @@
         console.log(myData);
 
     </script>
-
+{% include "exitModal.html" %}
     <script src="/static/js/index.js">
+
+    </script>
+
+    <script src="/static/js/openModal.js">
 
     </script>
 {% endblock %}

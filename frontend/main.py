@@ -18,6 +18,21 @@ def index():
     myList = ['Morskie Oko - Rysy', 'Morskie Oko', 'Rysy']
     return render_template('index.html', data=myList)
 
+@app.route("/Routes/<route_id>")
+def routes(route_id):
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    # points = [[51.5, -0.09], [52.0, -0.10]]
+    points = [[51.5, -0.09]]
+    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
+    if len(points) == 1:
+        otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
+    else:
+        otherSegments = None
+    routes = [("Super trasa 1", 1)] * 6  # get routes + ids
+    return render_template('routes.html', data=myList, points=points, map_init=map_init,
+                           correlledSegments=otherSegments, routes = routes)
+
 
 @app.route("/SegmentView")
 def segmentView():
