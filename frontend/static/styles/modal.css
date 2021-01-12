@@ -20,6 +20,15 @@
   width: 50%;
 }
 
+.addModal-content {
+  background-color: #fefefe;
+  margin: 5% auto 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 70%;
+  position: relative;
+}
+
 .close {
   color: #aaa;
   float: right;

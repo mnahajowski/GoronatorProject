@@ -14,6 +14,8 @@
 
         function showModal() {
             document.getElementById("addSegmentModal").style.display = "block"
+
+            initSecondaryMap("secondaryMap")
         }
     </script>
     <script>
@@ -68,7 +70,7 @@
 
 <div id="addSegmentModal" class="modal">
 
-    <div class="modal-content">
+    <div class="addModal-content">
         <span class="close"></span>
         <h5 class="borderredLabel">Skorelowane punkty</h5>
         <div class="flexElement segmentList">
@@ -79,6 +81,7 @@
                     {% endfor %}
             </div>
         </div>
+        <div id="secondaryMap" style="width: 300px; height: 300px;"></div>
         <button class="deletebtn" onclick="location.href='/';">
             Yes
         </button>
