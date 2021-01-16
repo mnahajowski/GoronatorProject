@@ -1,0 +1,119 @@
+.borderredLabel {
+    border: 3px solid black;
+    box-sizing: border-box;
+    color: black;
+    background-color: white;
+    width: 20vw;
+    padding: 0.5em;
+    text-align: center;
+}
+
+.listItems {
+    text-align: center;
+    border: 3px solid black;
+    box-sizing: border-box;
+    overflow-y: scroll;
+    max-height: 80%;
+}
+
+.bigListItems {
+    text-align: center;
+    border: 3px solid black;
+    box-sizing: border-box;
+}
+
+.importantLabel {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.normalLabel {
+    font-size: 35px;
+}
+
+.plusButton {
+    vertical-align: center;
+    width: 1em;
+}
+
+
+.flexElement ul {
+
+    margin-top: 1.5em;
+    list-style-type: none;
+}
+
+.bigListItems a {
+    height: 2.5em;
+}
+.flexElement ul li p{
+    background-color: white;
+    line-height: 2.5em;
+    padding: 0.2em 1em;
+    border: 1px solid black;
+    box-sizing: border-box;
+    display: inline;
+}
+
+.arrowImg {
+    height: 2em;
+    width: 2em;
+}
+
+.routeHeader {
+    margin: 32px 0 0 0;
+    text-align: center;
+}
+
+.segmentList {
+    margin: 0 0 0 16px;
+}
+
+.mediumList {
+    margin: 8px 16px 0 0;
+}
+
+.flexHolder {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    width: 90vw;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flexElement {
+    flex: 1 1 0;
+    margin: 8px 16px 0;
+    vertical-align: top;
+    width: 99%;
+}
+
+#map {
+    height: 50vh;
+    width: 50vh;
+}
+
+.btn.btn-default.btn-lg.saveButtonRight {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+}
+
+.btn.btn-default.btn-lg.closeButtonLeft {
+    position: absolute;
+    top: 32px;
+    left: 32px;
+}
+
+@media all and (max-width: 1250px) {
+    .flexHolder {
+        flex-flow:column wrap;
+    }
+    .flexElement {
+        flex: 1 1 auto;
+        margin-top: 10%;
+        margin-bottom: 10%;
+    }
+}

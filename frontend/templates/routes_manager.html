@@ -1,5 +1,6 @@
 {% block styles %}<link rel="stylesheet" href="/static/styles/documentation.css">
-<link rel="stylesheet" href="/static/styles/routes.css">{% endblock %}
+<link rel="stylesheet" href="/static/styles/routes_manager.css">
+{% endblock %}
 <div class="menu">
     <span>Twoje trasy:</span>
     {% for route in routes %}
@@ -7,5 +8,5 @@
     {% endfor %}
 </div>
 <div class="plannerView">
-    {%  include "planRouteView.html" %}
+    {%  include "route.html" %}
 </div>

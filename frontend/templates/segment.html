@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Góronator{% endblock %}
 {% block styles %}
-    <link rel="stylesheet" href="/static/styles/browser.css">{% endblock %}
+    <link rel="stylesheet" href="/static/styles/browser.css">
+    <link rel="stylesheet" href="/static/styles/exit_modal.css">
+    <link rel="stylesheet" href="/static/styles/segment.css">{% endblock %}
 {% block content %}
 
     <div class="ui-widget">
@@ -59,7 +61,7 @@
         console.log(myData);
 
     </script>
-{% include "exitModal.html" %}
+{% include "exit_modal.html" %}
     <script src="/static/js/index.js">
 
     </script>

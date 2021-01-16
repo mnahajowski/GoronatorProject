@@ -12,21 +12,18 @@
   background-color: rgba(0,0,0,0.4);
 }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 20% auto 30% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 50%;
+button img {
+     width: 32px;
 }
 
 .addModal-content {
-  background-color: #fefefe;
+  background-color: rgba(0, 0, 0, 0.7);
   margin: 5% auto 10% auto;
   padding: 20px;
   border: 1px solid #888;
   width: 70%;
   position: relative;
+  height: 70%;
 }
 
 .close {
@@ -42,10 +39,11 @@
   text-decoration: none;
   cursor: pointer;
 }
-.cancelbtn {
-  background-color: gray; /* Green */
-  border: none;
-  color: white;
+
+
+.checkbtn {
+  background-color: white;
+  border: black solid 3px;
   padding: 16px 32px;
   text-align: center;
   text-decoration: none;
@@ -54,25 +52,11 @@
   cursor: pointer;
 }
 
-.deletebtn:hover{
-    background-color: white;
-    color: black;
+.checkbtn:hover{
+    background-color: green;
+    color: white;
 }
 
-.cancelbtn:hover{
-    background-color: white;
-    color: black;
+.checkbtn img {
+    height: 16px;
 }
-
-.deletebtn {
-  background-color: red; /* Green */
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-}
-

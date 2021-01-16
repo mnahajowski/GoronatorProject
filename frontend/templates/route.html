@@ -2,7 +2,8 @@
 {% block title %}Góronator{% endblock %}
 {% block styles %}
     <link rel="stylesheet" href="/static/styles/browser.css">
-    <link rel="stylesheet" href="/static/styles/routeView.css">
+    <link rel="stylesheet" href="/static/styles/route.css">
+    <link rel="stylesheet" href="/static/styles/exit_modal.css">
 {% endblock %}
 
 {% block content %}
@@ -22,7 +23,7 @@
         function changeBackground(newSegment) {
             var segments = document.getElementsByClassName("correlledSegments");
             for (var segment of segments) {
-                if(segment.text === newSegment) {
+                if (segment.text === newSegment) {
                     segment.style.backgroundColor = "#44AAEE";
                 } else {
                     segment.style.backgroundColor = "white";
@@ -35,7 +36,7 @@
     <button class="btn btn-default btn-lg closeButtonLeft">
         <img id="toModal" src="/static/images/closeButton.svg"/>
     </button>
-    <button class="btn btn-default btn-lg closeButtonRight">
+    <button class="btn btn-default btn-lg saveButtonRight">
         <img src="/static/images/saveButton.svg"/>
     </button>
     <div class="routeHeader">
@@ -44,7 +45,7 @@
     </div>
     <div class="flexHolder">
         <div class="flexElement segmentList">
-            <div class="listItems">
+            <div class="bigListItems">
                 {% for segment in correlledSegments %}
                     <a href="/" class="list-group-item list-group-item-action">{{ segment }}</a>
                 {% endfor %}
@@ -68,29 +69,34 @@
     </div>
 
 
-<div id="addSegmentModal" class="modal">
+    <div id="addSegmentModal" class="modal">
 
-    <div class="addModal-content">
-        <span class="close"></span>
-        <h5 class="borderredLabel">Skorelowane punkty</h5>
-        <div class="flexElement segmentList">
-            <div class="listItems">
-                {% for segment in correlledSegments %}
-                        <a class="list-group-item list-group-item-action correlledSegments"
-                           onclick="changeBackground('{{ segment }}')">{{ segment }}</a>
-                    {% endfor %}
+        <div class="addModal-content">
+            <span class="close"></span>
+
+            <div style="display: flex; flex-direction: row">
+                <div class="segmentList">
+                    <h5 class="borderredLabel">Skorelowane punkty</h5>
+                    <div class="listItems" style="width: 20vw; flex: 1 1 0;">
+                        {% for segment in correlledSegments %}
+                            <a class="list-group-item list-group-item-action correlledSegments"
+                               onclick="changeBackground('{{ segment }}')">{{ segment }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="secondaryMap" style="height: 400px; margin-left:32px; flex: 1 1 0;"></div>
+            </div>
+            <div style=" position: absolute; bottom: 16px; right: 16px;">
+                <button class="checkbtn" onclick="location.href='/';">
+                    <img src="/static/images/checkmark.svg">
+                </button>
+                <button class="checkbtn" onclick="document.getElementById('addSegmentModal').style.display='none'">
+                    Go back
+                </button>
             </div>
         </div>
-        <div id="secondaryMap" style="width: 300px; height: 300px;"></div>
-        <button class="deletebtn" onclick="location.href='/';">
-            Yes
-        </button>
-        <button class="cancelbtn" onclick="document.getElementById('addSegmentModal').style.display='none'">
-            No
-        </button>
-    </div>
 
-</div>
+    </div>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/maps.js') }}"></script>
 
@@ -104,7 +110,7 @@
     <script src="/static/js/index.js">
 
     </script>
-{% include "exitModal.html" %}
+    {% include "exit_modal.html" %}
     <script src="/static/js/openModal.js">
 
     </script>

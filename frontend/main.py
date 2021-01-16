@@ -3,7 +3,6 @@ import os
 from flask import Flask, render_template, request, redirect
 from werkzeug.utils import secure_filename
 
-
 app = Flask(__name__)
 DEBUG = True
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'images', 'storage')
@@ -18,7 +17,8 @@ def index():
     myList = ['Morskie Oko - Rysy', 'Morskie Oko', 'Rysy']
     return render_template('index.html', data=myList)
 
-@app.route("/Routes/<route_id>")
+
+@app.route("/routes/<route_id>")
 def routes(route_id):
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
@@ -30,45 +30,48 @@ def routes(route_id):
     else:
         otherSegments = None
     routes = [("Super trasa 1", 1)] * 6  # get routes + ids
-    return render_template('routes.html', data=myList, points=points, map_init=map_init,
-                           correlledSegments=otherSegments, routes = routes)
+    return render_template('routes_manager.html', data=myList, points=points, map_init=map_init,
+                           correlledSegments=otherSegments, routes=routes)
 
 
-@app.route("/SegmentView")
-def segmentView():
-    #data = requests.get('http://localhost:5000/GetPoints')
-    #print(data.content)
-    #request.urlopen()
-    #request.
+@app.route("/segment/<segment_id>")
+def segmentView(segment_id):
+    # data = requests.get('http://localhost:5000/GetPoints')
+    # print(data.content)
+    # request.urlopen()
+    # request.
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
     points = [[51.5, -0.09], [52.0, -0.10]]
-    #points = [[51.5, -0.09]]
-    map_init = [sum(x[0] for x in points)/len(points), sum(x[1] for x in points)/len(points)]
+    # points = [[51.5, -0.09]]
+    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
     if len(points) == 1:
         otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
     else:
         otherSegments = None
 
-    return render_template('segmentView.html', data=myList, points=points, map_init=map_init, correlledSegments=otherSegments)
+    return render_template('segment.html', data=myList, points=points, map_init=map_init,
+                           correlledSegments=otherSegments)
 
-@app.route("/RouteView")
+
+@app.route("/route")
 def routeView():
-    #data = requests.get('http://localhost:5000/GetPoints')
-    #print(data.content)
-    #request.urlopen()
-    #request.
+    # data = requests.get('http://localhost:5000/GetPoints')
+    # print(data.content)
+    # request.urlopen()
+    # request.
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
-    #points = [[51.5, -0.09], [52.0, -0.10]]
+    # points = [[51.5, -0.09], [52.0, -0.10]]
     points = [[51.5, -0.09]]
-    map_init = [sum(x[0] for x in points)/len(points), sum(x[1] for x in points)/len(points)]
+    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
     if len(points) == 1:
         otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
     else:
         otherSegments = None
 
-    return render_template('planRouteView.html', data=myList, points=points, map_init=map_init, correlledSegments=otherSegments)
+    return render_template('route.html', data=myList, points=points, map_init=map_init, correlledSegments=otherSegments)
+
 
 @app.route("/routes/<route_id>/documentation", methods=['GET', 'POST'])
 def documentation(route_id):
