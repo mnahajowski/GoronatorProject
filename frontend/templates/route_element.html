@@ -3,7 +3,7 @@
 {% block styles %}
     <link rel="stylesheet" href="/static/styles/browser.css">
     <link rel="stylesheet" href="/static/styles/exit_modal.css">
-    <link rel="stylesheet" href="/static/styles/segment.css">{% endblock %}
+    <link rel="stylesheet" href="/static/styles/route_element.css">{% endblock %}
 {% block content %}
 
     <div class="ui-widget">
@@ -17,19 +17,23 @@
         <div class="flexElement">
             <div class="segmentDescription">
                 <div class="importantLabel">
-                    {{ data[0][0] }}
+                    {{ route_element['name'] }}
                 </div>
                 {% if points.__len__() > 1 %}
                     <div class="normalLabel">
-                        {{ data[0][1] }} pkt GOT | {{ data[0][2] }} km <-> | {{ data[0][3] }} m ^v
+                        {{ route_element['score'] }}/{{ route_element['score_reverse'] }} pkt GOT
+                        | {{ route_element['distance'] }}m <-> | {{ route_element['height_diff_up'] }}m ^
+                        | {{ route_element['height_diff_down'] }}m v
                     </div>
                 {% else %}
-                    Lista skorelowanych punktów
-                    <div class="list-group">
-                        {% for segment in correlledSegments %}
-                            <a href="/" class="list-group-item list-group-item-action">{{ segment }}</a>
+                    <div class="normalLabel">
+                        Możliwe odcinki
+                    </div>
+                    <div class="list-group correlated-list">
+                        {% for segment in correlated_segments %}
+                            <a href="/segment/{{ segment['id'] }}"
+                               class="list-group-item list-group-item-action">{{ segment['name'] }}</a>
                         {% endfor %}
-                        {# dodac paske przewijania skorelowanych punktow i takie tam           #}
                     </div>
 
                 {% endif %}
@@ -45,28 +49,19 @@
 
     <script>
         initMap({{ map_init[0] }}, {{ map_init[1] }}, 'map')
-        for (var point of {{points}}) {
-            addMarker(point[0], point[1], "Marker name");
+
+        for (let point of {{ points | tojson }}) {
+            addMarker(point['x'], point['y'], point['name']);
         }
 
+        const names = {{ names | tojson }};
+        const mapping =
+        {{ id_mapping | tojson }}
     </script>
 
-    <script>
-        var myData = [];
-        var mydata2 = {{data | tojson}};
-        mydata2.forEach(function (entry) {
-            myData.push(entry[0]);
-            console.log(entry[0]);
-        });
-        console.log(myData);
+    {% include "exit_modal.html" %}
 
-    </script>
-{% include "exit_modal.html" %}
-    <script src="/static/js/index.js">
+    <script src="/static/js/browser.js"></script>
+    <script src="/static/js/openModal.js"></script>
 
-    </script>
-
-    <script src="/static/js/openModal.js">
-
-    </script>
 {% endblock %}

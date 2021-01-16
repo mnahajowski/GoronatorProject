@@ -1,8 +1,9 @@
 from backend.db_connector import dao
 
 
-def get_data_for_browser():
-    points = dao.get_points()
-    segments = dao.get_segment_list()
+def get_points():
+    return dao.get_points()
 
-    return points + segments
+
+def get_segments():
+    return dao.get_segments()

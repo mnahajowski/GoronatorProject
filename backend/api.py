@@ -7,8 +7,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    data = points.get_data_for_browser()
-    return {"data": data}
+    all_points = points.get_points()
+    all_segments = points.get_segments()
+    return {"points": all_points, "segments": all_segments}
 
 
 if __name__ == '__main__':

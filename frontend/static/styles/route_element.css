@@ -3,13 +3,8 @@
     font-weight: bold;
 }
 
-.importantLabel {
-    font-size: 40px;
-    font-weight: bold;
-}
-
 .normalLabel {
-    font-size: 35px;
+    font-size: 32px;
 }
 
 .flexHolder {
@@ -48,13 +43,19 @@
     margin-top:1%;
     margin-left:auto;
     margin-right:auto;
+    z-index: 3;
 }
 
 #map {
     height: 50vh;
     width: 50vh;
+    z-index: 2;
 }
 
+.correlated-list {
+    margin: 32px 32px 32px 0;
+    overflow-y: scroll;
+}
 
 @media all and (max-width: 1250px) {
     .flexHolder {

@@ -1,9 +1,16 @@
+function addRedirect(name) {
+    if (name in mapping.points)
+        window.location.href = "/point/" + mapping.points[name];
+    else
+        window.location.href = "/segment/" + mapping.segments[name];
+}
+
 $( function() {
     $( "#tags" ).autocomplete({
       source: names,
       minLength: 3,
       select: function (event, selection) {
-          window.location.href = "/segment/" + mapping[selection.item.value];
+          addRedirect(selection.item.value)
       }
         });
     });
@@ -11,6 +18,6 @@ $( function() {
     const node = document.getElementById("tags")
     node.addEventListener("keydown", function(event) {
     if (event.key === "Enter")
-        window.location.href = "/segment/" + mapping[node.value]
+        addRedirect(node.value)
 
 });

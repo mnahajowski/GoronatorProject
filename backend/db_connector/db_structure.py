@@ -79,6 +79,9 @@ class Odcinek(Base):
     punkty_got_w_kierunku = Column(Integer, nullable=False)
     punkty_got_w_przeciwnym_kierunku = Column(Integer)
     nazwa = Column(String(255))
+    odleglosc = Column(Integer, nullable=False)
+    suma_podejsc = Column(Integer, nullable=False)
+    suma_zejsc = Column(Integer, nullable=False)
 
     region = relationship('Region')
     wezel = relationship('Wezel', primaryjoin='Odcinek.wezel_id == Wezel.id')

@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, render_template, request, redirect
 from werkzeug.utils import secure_filename
+import parsers
 
 import requests
 import json
@@ -20,27 +21,42 @@ API_URL = 'http://localhost:5001'
 @app.route("/")
 def index():
     response = requests.get(API_URL)
-    data = json.loads(response.content).get('data', [])
-    names = [elem['name'] for elem in data]
-    id_mapping = {elem['name']: elem['id'] for elem in data}
+    data = json.loads(response.content)
+
+    names, id_mapping = parsers.parse_data_for_browser(data)
 
     return render_template('index.html', id_mapping=id_mapping, names=names)
 
 
 @app.route("/segment/<segment_id>")
-def segmentView(segment_id):
-    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
-    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
-    points = [[51.5, -0.09], [52.0, -0.10]]
-    # points = [[51.5, -0.09]]
-    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
-    if len(points) == 1:
-        otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
-    else:
-        otherSegments = None
+def segment(segment_id):
+    response = requests.get(API_URL)
+    data = json.loads(response.content)
 
-    return render_template('segment.html', data=myList, points=points, map_init=map_init,
-                           correlledSegments=otherSegments)
+    names, id_mapping = parsers.parse_data_for_browser(data)
+
+    segment = parsers.get_element_by_id(int(segment_id), data['segments'])
+    point_1, point_2 = parsers.get_element_by_id(segment['point_1'], data['points']), \
+                       parsers.get_element_by_id(segment['point_2'], data['points'])
+
+    map_init_point = ((point_1['x'] + point_2['x']) / 2, (point_1['y'] + point_2['y']) / 2)
+
+    return render_template('route_element.html', names=names, id_mapping=id_mapping, route_element=segment,
+                           points=[point_1, point_2], map_init=map_init_point)
+
+
+@app.route("/point/<point_id>")
+def pointView(point_id):
+    response = requests.get(API_URL)
+    data = json.loads(response.content)
+
+    names, id_mapping = parsers.parse_data_for_browser(data)
+    point = parsers.get_element_by_id(int(point_id), data['points'])
+    map_init_point = (point['x'], point['y'])
+    correlated_segments = parsers.get_correlated_segments(int(point_id), data['segments'])
+
+    return render_template('route_element.html', names=names, id_mapping=id_mapping, route_element=point,
+                           points=[point], map_init=map_init_point, correlated_segments=correlated_segments)
 
 
 @app.route("/routes/<route_id>")
