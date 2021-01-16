@@ -12,10 +12,18 @@ class Administrator(Base):
     id = Column(Integer, primary_key=True, server_default=text("nextval('administrator_id_seq'::regclass)"))
 
 
+class Przodownik(Base):
+    __tablename__ = 'przodownik'
+
+    id = Column(Integer, primary_key=True, server_default=text("nextval('przodownik_id_seq'::regclass)"))
+    data_wygasniecia_legitymacji = Column(Date)
+
+
 class Region(Base):
     __tablename__ = 'region'
 
     id = Column(Integer, primary_key=True, server_default=text("nextval('region_id_seq'::regclass)"))
+    nazwa = Column(String(255))
 
 
 class StatusTrasy(Base):
@@ -40,6 +48,15 @@ class TypOdznaki(Base):
     nazwa = Column(String(255))
 
 
+class Wezel(Base):
+    __tablename__ = 'wezel'
+
+    id = Column(Integer, primary_key=True, server_default=text("nextval('wezel_id_seq'::regclass)"))
+    nazwa = Column(String(255))
+    wspolrzedna_x = Column(Float, nullable=False)
+    wspolrzedna_y = Column(Float, nullable=False)
+
+
 class Got(Base):
     __tablename__ = 'got'
 
@@ -52,44 +69,33 @@ class Got(Base):
     turysta = relationship('Turysta')
 
 
-class Przodownik(Base):
-    __tablename__ = 'przodownik'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('przodownik_id_seq'::regclass)"))
-    administrator_id = Column(ForeignKey('administrator.id'), nullable=False)
-    data_wygasniecia_legitymacji = Column(Date)
-
-    administrator = relationship('Administrator')
-
-
-class Wezel(Base):
-    __tablename__ = 'wezel'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('wezel_id_seq'::regclass)"))
-    administrator_id = Column(ForeignKey('administrator.id'), nullable=False)
-    nazwa = Column(String(255))
-    wspolrzedna_x = Column(Float, nullable=False)
-    wspolrzedna_y = Column(Float, nullable=False)
-
-    administrator = relationship('Administrator')
-
-
 class Odcinek(Base):
     __tablename__ = 'odcinek'
 
     id = Column(Integer, primary_key=True, server_default=text("nextval('odcinek_id_seq'::regclass)"))
     region_id = Column(ForeignKey('region.id'), nullable=False)
     wezel_id2 = Column(ForeignKey('wezel.id'), nullable=False)
-    administrator_id = Column(ForeignKey('administrator.id'), nullable=False)
     wezel_id = Column(ForeignKey('wezel.id'), nullable=False)
     punkty_got_w_kierunku = Column(Integer, nullable=False)
     punkty_got_w_przeciwnym_kierunku = Column(Integer)
     nazwa = Column(String(255))
 
-    administrator = relationship('Administrator')
     region = relationship('Region')
     wezel = relationship('Wezel', primaryjoin='Odcinek.wezel_id == Wezel.id')
     wezel1 = relationship('Wezel', primaryjoin='Odcinek.wezel_id2 == Wezel.id')
+
+
+class Uprawnienia(Base):
+    __tablename__ = 'uprawnienia'
+
+    id = Column(Integer, primary_key=True, server_default=text("nextval('uprawnienia_id_seq'::regclass)"))
+    administrator_id = Column(ForeignKey('administrator.id'), nullable=False)
+    region_id = Column(ForeignKey('region.id'), nullable=False)
+    przodownik_id = Column(ForeignKey('przodownik.id'), nullable=False)
+
+    administrator = relationship('Administrator')
+    przodownik = relationship('Przodownik')
+    region = relationship('Region')
 
 
 class Trasa(Base):
@@ -108,17 +114,13 @@ class Trasa(Base):
     turysta = relationship('Turysta')
 
 
-class Uprawnienia(Base):
-    __tablename__ = 'uprawnienia'
+class Zamkniecie(Base):
+    __tablename__ = 'zamkniecie'
 
-    id = Column(Integer, primary_key=True, server_default=text("nextval('uprawnienia_id_seq'::regclass)"))
-    administrator_id = Column(ForeignKey('administrator.id'), nullable=False)
-    region_id = Column(ForeignKey('region.id'), nullable=False)
-    przodownik_id = Column(ForeignKey('przodownik.id'), nullable=False)
+    id = Column(Integer, primary_key=True, server_default=text("nextval('zamkniecie_id_seq'::regclass)"))
+    odcinek_id = Column(ForeignKey('odcinek.id'), nullable=False)
 
-    administrator = relationship('Administrator')
-    przodownik = relationship('Przodownik')
-    region = relationship('Region')
+    odcinek = relationship('Odcinek')
 
 
 class DokumentacjaTrasy(Base):
@@ -141,14 +143,3 @@ class OdcinekTrasy(Base):
 
     odcinek = relationship('Odcinek')
     trasa = relationship('Trasa')
-
-
-class Zamkniecie(Base):
-    __tablename__ = 'zamkniecie'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('zamkniecie_id_seq'::regclass)"))
-    odcinek_id = Column(ForeignKey('odcinek.id'), nullable=False)
-    administrator_id = Column(ForeignKey('administrator.id'), nullable=False)
-
-    administrator = relationship('Administrator')
-    odcinek = relationship('Odcinek')

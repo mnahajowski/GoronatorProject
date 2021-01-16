@@ -14,12 +14,33 @@ app.config.from_object(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = '7d441f27d441f27567d441f2b6176a'
 
+API_URL = 'http://localhost:5001'
+
 
 @app.route("/")
 def index():
-    response = requests.get('http://localhost:5001')
-    data = json.loads(response.content)
-    return render_template('index.html', data=data.get('data', []))
+    response = requests.get(API_URL)
+    data = json.loads(response.content).get('data', [])
+    names = [elem['name'] for elem in data]
+    id_mapping = {elem['name']: elem['id'] for elem in data}
+
+    return render_template('index.html', id_mapping=id_mapping, names=names)
+
+
+@app.route("/segment/<segment_id>")
+def segmentView(segment_id):
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    points = [[51.5, -0.09], [52.0, -0.10]]
+    # points = [[51.5, -0.09]]
+    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
+    if len(points) == 1:
+        otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
+    else:
+        otherSegments = None
+
+    return render_template('segment.html', data=myList, points=points, map_init=map_init,
+                           correlledSegments=otherSegments)
 
 
 @app.route("/routes/<route_id>")
@@ -36,26 +57,6 @@ def routes(route_id):
     routes = [("Super trasa 1", 1)] * 6  # get routes + ids
     return render_template('routes_manager.html', data=myList, points=points, map_init=map_init,
                            correlledSegments=otherSegments, routes=routes)
-
-
-@app.route("/segment/<segment_id>")
-def segmentView(segment_id):
-    # data = requests.get('http://localhost:5000/GetPoints')
-    # print(data.content)
-    # request.urlopen()
-    # request.
-    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
-    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
-    points = [[51.5, -0.09], [52.0, -0.10]]
-    # points = [[51.5, -0.09]]
-    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
-    if len(points) == 1:
-        otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
-    else:
-        otherSegments = None
-
-    return render_template('segment.html', data=myList, points=points, map_init=map_init,
-                           correlledSegments=otherSegments)
 
 
 @app.route("/route")
