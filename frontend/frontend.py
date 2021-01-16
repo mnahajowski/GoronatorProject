@@ -3,6 +3,9 @@ import os
 from flask import Flask, render_template, request, redirect
 from werkzeug.utils import secure_filename
 
+import requests
+import json
+
 app = Flask(__name__)
 DEBUG = True
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'images', 'storage')
@@ -14,8 +17,9 @@ app.config['SECRET_KEY'] = '7d441f27d441f27567d441f2b6176a'
 
 @app.route("/")
 def index():
-    myList = ['Morskie Oko - Rysy', 'Morskie Oko', 'Rysy']
-    return render_template('index.html', data=myList)
+    response = requests.get('http://localhost:5001')
+    data = json.loads(response.content)
+    return render_template('index.html', data=data.get('data', []))
 
 
 @app.route("/routes/<route_id>")
@@ -95,4 +99,4 @@ def documentation(route_id):
 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=12345)
+    app.run(host='localhost', port=5000)
