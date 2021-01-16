@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Góronator{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/styles/browser.css">
+    <link rel="stylesheet" href="/static/styles/route.css">
+    <link rel="stylesheet" href="/static/styles/exit_modal.css">
+{% endblock %}
+
+{% block content %}
+
+    <script>
+        function hideModal() {
+            document.getElementById("addSegmentModal").style.display = "none"
+        }
+
+        function showModal() {
+            document.getElementById("addSegmentModal").style.display = "block"
+
+            initSecondaryMap("secondaryMap")
+        }
+    </script>
+    <script>
+        function changeBackground(newSegment) {
+            var segments = document.getElementsByClassName("correlledSegments");
+            for (var segment of segments) {
+                if (segment.text === newSegment) {
+                    segment.style.backgroundColor = "#44AAEE";
+                } else {
+                    segment.style.backgroundColor = "white";
+                }
+            }
+
+
+        }
+    </script>
+    <button class="btn btn-default btn-lg closeButtonLeft">
+        <img id="toModal" src="/static/images/closeButton.svg"/>
+    </button>
+    <button class="btn btn-default btn-lg saveButtonRight">
+        <img src="/static/images/saveButton.svg"/>
+    </button>
+    <div class="routeHeader">
+        <h1 class="importantLabel">Trasa 1</h1>
+        <p class="normalLabel">23 pkt GOT | 22.3km <-> | 1200 m ^v</p>
+    </div>
+    <div class="flexHolder">
+        <div class="flexElement segmentList">
+            <div class="bigListItems">
+                {% for segment in correlledSegments %}
+                    <a href="/" class="list-group-item list-group-item-action">{{ segment }}</a>
+                {% endfor %}
+                <a class="list-group-item list-group-item-action" onclick="showModal()">
+                    <img class="plusButton" src="/static/images/plus-solid-black.svg"></a>
+            </div>
+
+        </div>
+        <div class="flexElement mediumList">
+            <ul>
+
+                {% for segment in correlledSegments %}
+                    <li>
+                        <img class="arrowImg" src="/static/images/arrow.svg">
+                        <p>{{ data[0][1] }} pkt GOT | {{ data[0][2] }} km <-> | {{ data[0][3] }} m ^v</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="map" class="flexElement"></div>
+    </div>
+
+
+    <div id="addSegmentModal" class="modal">
+
+        <div class="addModal-content">
+            <span class="close"></span>
+
+            <div style="display: flex; flex-direction: row">
+                <div class="segmentList">
+                    <h5 class="borderredLabel">Skorelowane punkty</h5>
+                    <div class="listItems" style="width: 20vw; flex: 1 1 0;">
+                        {% for segment in correlledSegments %}
+                            <a class="list-group-item list-group-item-action correlledSegments"
+                               onclick="changeBackground('{{ segment }}')">{{ segment }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="secondaryMap" style="height: 400px; margin-left:32px; flex: 1 1 0;"></div>
+            </div>
+            <div style=" position: absolute; bottom: 16px; right: 16px;">
+                <button class="checkbtn" onclick="location.href='/';">
+                    <img src="/static/images/checkmark.svg">
+                </button>
+                <button class="checkbtn" onclick="document.getElementById('addSegmentModal').style.display='none'">
+                    Go back
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/maps.js') }}"></script>
+
+    <script>
+        initMap({{ map_init[0] }}, {{ map_init[1] }}, 'map')
+        for (var point of {{points}}) {
+            addMarker(point[0], point[1], "Marker name");
+        }
+    </script>
+
+    <script src="/static/js/index.js">
+
+    </script>
+    {% include "exit_modal.html" %}
+    <script src="/static/js/openModal.js">
+
+    </script>
+{% endblock %}

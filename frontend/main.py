@@ -3,7 +3,6 @@ import os
 from flask import Flask, render_template, request, redirect
 from werkzeug.utils import secure_filename
 
-
 app = Flask(__name__)
 DEBUG = True
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'images', 'storage')
@@ -15,27 +14,64 @@ app.config['SECRET_KEY'] = '7d441f27d441f27567d441f2b6176a'
 
 @app.route("/")
 def index():
-    myList = ['Morskie Oko - Rysy', 'Adam', 'Michał']
+    myList = ['Morskie Oko - Rysy', 'Morskie Oko', 'Rysy']
     return render_template('index.html', data=myList)
 
 
-@app.route("/SegmentView")
-def segmentView():
-    #data = requests.get('http://localhost:5000/GetPoints')
-    #print(data.content)
-    #request.urlopen()
-    #request.
+@app.route("/routes/<route_id>")
+def routes(route_id):
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
-    #points = [[51.5, -0.09], [52.0, -0.10]]
+    # points = [[51.5, -0.09], [52.0, -0.10]]
     points = [[51.5, -0.09]]
-    map_init = [sum(x[0] for x in points)/len(points), sum(x[1] for x in points)/len(points)]
+    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
+    if len(points) == 1:
+        otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
+    else:
+        otherSegments = None
+    routes = [("Super trasa 1", 1)] * 6  # get routes + ids
+    return render_template('routes_manager.html', data=myList, points=points, map_init=map_init,
+                           correlledSegments=otherSegments, routes=routes)
+
+
+@app.route("/segment/<segment_id>")
+def segmentView(segment_id):
+    # data = requests.get('http://localhost:5000/GetPoints')
+    # print(data.content)
+    # request.urlopen()
+    # request.
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    points = [[51.5, -0.09], [52.0, -0.10]]
+    # points = [[51.5, -0.09]]
+    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
     if len(points) == 1:
         otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
     else:
         otherSegments = None
 
-    return render_template('segmentView.html', data=myList, points=points, map_init=map_init, correlledSegments=otherSegments)
+    return render_template('segment.html', data=myList, points=points, map_init=map_init,
+                           correlledSegments=otherSegments)
+
+
+@app.route("/route")
+def routeView():
+    # data = requests.get('http://localhost:5000/GetPoints')
+    # print(data.content)
+    # request.urlopen()
+    # request.
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
+    # points = [[51.5, -0.09], [52.0, -0.10]]
+    points = [[51.5, -0.09]]
+    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
+    if len(points) == 1:
+        otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
+    else:
+        otherSegments = None
+
+    return render_template('route.html', data=myList, points=points, map_init=map_init, correlledSegments=otherSegments)
+
 
 @app.route("/routes/<route_id>/documentation", methods=['GET', 'POST'])
 def documentation(route_id):
@@ -53,7 +89,7 @@ def documentation(route_id):
             return redirect(request.url)
 
     else:
-        images = ['background.jpg'] * 5  # get images
+        images = ['sample_img.jpg'] * 5  # get images
         routes = [("Super trasa 1", 1)] * 6  # get routes + ids
         return render_template('documentation.html', routes=routes, route_id=route_id, images=images)
 

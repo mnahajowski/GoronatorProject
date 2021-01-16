@@ -1,0 +1,12 @@
+.plannerView {
+    position: absolute;
+    top: 0;
+    left: 15vw;
+    width: 85vw;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+div.flexHolder {
+    width: 80vw;
+}
