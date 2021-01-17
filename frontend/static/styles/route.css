@@ -14,6 +14,13 @@
     box-sizing: border-box;
     overflow-y: scroll;
     max-height: 80%;
+    width: 20vw;
+    flex: 1 1 0;
+}
+
+.modal-main-section {
+    display: flex;
+    flex-direction: row
 }
 
 .bigListItems {
@@ -120,6 +127,18 @@
     position: absolute;
     top: 32px;
     left: 32px;
+}
+
+.modal-buttons {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+}
+
+#secondaryMap {
+    height: 400px;
+    margin-left:32px;
+    flex: 1 1 0;
 }
 
 @media all and (max-width: 1250px) {

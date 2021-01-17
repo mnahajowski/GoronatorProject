@@ -1,5 +1,4 @@
 import sqlalchemy
-from sqlalchemy import insert, select
 from backend.db_connector.model.data_models import *
 
 import json
@@ -47,6 +46,16 @@ def get_segments_by_id(segment_list):
         result = c.execute("select id, region_id, wezel_id2, wezel_id, punkty_got_w_kierunku, "
                            "punkty_got_w_przeciwnym_kierunku, nazwa, odleglosc, suma_podejsc, suma_zejsc from odcinek "
                            f"where id in {segments_parsed}")
+
+    return [Segment(id, name, point_1, point_2, region, score, score_reverse, distance, up, down)
+            for id, region, point_2, point_1, score, score_reverse, name, distance, up, down in result]
+
+
+def get_correlated_segments(point_id):
+    with _connection() as c:
+        result = c.execute("select id, region_id, wezel_id2, wezel_id, punkty_got_w_kierunku, "
+                           "punkty_got_w_przeciwnym_kierunku, nazwa, odleglosc, suma_podejsc, suma_zejsc from odcinek "
+                           f"where wezel_id = {point_id} or wezel_id2 = {point_id}")
 
     return [Segment(id, name, point_1, point_2, region, score, score_reverse, distance, up, down)
             for id, region, point_2, point_1, score, score_reverse, name, distance, up, down in result]

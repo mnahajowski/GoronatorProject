@@ -8,18 +8,45 @@ function hideModal() {
 function showModal() {
     document.getElementById("addSegmentModal").style.display = "block"
 
+
+    if (routeSegments.length > 0) {
+        let lastPointId;
+
+        if (routeSegments[routeSegments.length - 1].direction)
+            lastPointId = routeSegments[routeSegments.length - 1].point_1
+        else
+            lastPointId = routeSegments[routeSegments.length - 1].point_2
+
+        fetch("http://localhost:5001/correlated/" + lastPointId)
+            .then(res => res.json())
+            .then(data => addCorrelatedSegments(data))
+    } else
+        fetch("http://localhost:5001/segments")
+            .then(res => res.json())
+            .then(data => addCorrelatedSegments(data))
+
     initSecondaryMap("secondaryMap")
 }
 
-function changeBackground(newSegment) {
+
+function onCorrelatedClick(name, point_1, point_2) {
     let segments = document.getElementsByClassName("correlledSegments");
     for (let segment of segments) {
-        if (segment.text === newSegment) {
+        if (segment.text === name)
             segment.style.backgroundColor = "#44AAEE";
-        } else {
+        else
             segment.style.backgroundColor = "white";
-        }
     }
+
+    removeNewMarkers()
+
+    fetch(`http://localhost:5001/point/${point_1},${point_2}`)
+            .then(res => res.json())
+            .then(points => {
+                for (let point of points.points)
+                    if (markersOld.findIndex(m => m[2] === point.name) === -1)
+                        addMarker(point['x'], point['y'], point['name'], 'red', true)
+            })
 }
 
 function updateRouteInfo() {
@@ -108,4 +135,18 @@ function addSegmentsToList() {
     template.innerHTML = '<a id=\"plus-button-holder\" class=\"list-group-item list-group-item-action\" onclick=\"showModal()\">\n' +
     '    <img class=\"plusButton\" src=\"/static/images/plus-solid-black.svg\">\n</a>';
     segmentList.appendChild(template.content.firstChild)
+}
+
+
+function addCorrelatedSegments(segments) {
+    segments = segments.segments
+    let correlatedList = document.getElementById("correlated-list");
+    correlatedList.innerHTML = ""
+
+    for (let segment of segments) {
+        let template = document.createElement('template');
+        template.innerHTML = `<a class="list-group-item list-group-item-action correlledSegments"
+                               onclick="onCorrelatedClick('${segment.name}', ${segment.point_1}, ${segment.point_2})">${segment.name}</a>`
+        correlatedList.appendChild(template.content.firstChild)
+    }
 }

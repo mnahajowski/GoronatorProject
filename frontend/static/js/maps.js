@@ -8,7 +8,7 @@ let oldX, oldY;
 function initMap(x, y, divId) {
     oldX = x;
     oldY = y;
-    mainMap = L.map(divId).setView([x, y], 13);
+    mainMap = L.map(divId).setView([x, y], 12);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -21,7 +21,7 @@ function initMap(x, y, divId) {
 }
 
 function initSecondaryMap(divId) {
-    secondaryMap = L.map(divId).setView([oldX, oldY], 13);
+    secondaryMap = L.map(divId).setView([oldX, oldY], 12);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -55,7 +55,7 @@ function addMarker(x, y, text, color, toNew) {
         .openPopup();
 
     if (toNew === true) {
-        markersNew.push(marker);
+        markersNew.push([x, y, text, color, marker]);
         marker.addTo(secondaryMap);
     } else {
         markersOld.push([x, y, text, color]);
@@ -65,6 +65,8 @@ function addMarker(x, y, text, color, toNew) {
 
 
 function removeNewMarkers() {
-    for (let marker of markersNew)
-        secondaryMap.removeLayer(marker);
+    for (let marker of markersNew) {
+        if (markersOld.findIndex(m => m[2] === marker[2]) === -1)
+            secondaryMap.removeLayer(marker[4]);
+    }
 }

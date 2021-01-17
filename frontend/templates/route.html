@@ -35,19 +35,16 @@
         <div class="addModal-content">
             <span class="close"></span>
 
-            <div style="display: flex; flex-direction: row">
+            <div class="modal-main-section">
                 <div class="segmentList">
                     <h5 class="borderredLabel">Skorelowane punkty</h5>
-                    <div class="listItems" style="width: 20vw; flex: 1 1 0;">
-                        {% for segment in segments %}  {# TODO  #}
-                            <a class="list-group-item list-group-item-action correlledSegments"
-                               onclick="changeBackground('{{ segment['name'] }}')">{{ segment['name'] }}</a>
-                        {% endfor %}
+                    <div id="correlated-list" class="listItems">
+                        <a class="list-group-item list-group-item-action correlledSegments">Pobieranie danych...</a>
                     </div>
                 </div>
-                <div id="secondaryMap" style="height: 400px; margin-left:32px; flex: 1 1 0;"></div>
+                <div id="secondaryMap"></div>
             </div>
-            <div style=" position: absolute; bottom: 16px; right: 16px;">
+            <div class="modal-buttons">
                 <button class="checkbtn" onclick="location.href='/';">
                     <img src="/static/images/checkmark.svg">
                 </button>
