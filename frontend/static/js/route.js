@@ -150,3 +150,21 @@ function addCorrelatedSegments(segments) {
         correlatedList.appendChild(template.content.firstChild)
     }
 }
+
+function saveRoute() {
+    let route = {}
+
+    route.name = document.getElementById('route-name').textContent
+    route.segments = []
+
+    for (segment of routeSegments) {
+        let newSegment = {}
+        newSegment.segment_id = segment.id
+        newSegment.direction = segment.direction
+        route.segments.push(newSegment)
+    }
+
+
+
+    window.location.href = "/"
+}

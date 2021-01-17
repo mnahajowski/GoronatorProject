@@ -11,12 +11,12 @@
     <button class="btn btn-default btn-lg closeButtonLeft">
         <img id="toModal" src="/static/images/closeButton.svg"/>
     </button>
-    <button class="btn btn-default btn-lg saveButtonRight">
-        <img src="/static/images/saveButton.svg"/> {# TODO wrap in form #}
+    <button class="btn btn-default btn-lg saveButtonRight" onclick="saveRoute()">
+        <img src="/static/images/saveButton.svg"/>
     </button>
 
     <div class="routeHeader">
-        <h1 class="importantLabel"><input type="text" value="Nowa trasa..."></h1>
+        <h1 class="importantLabel"><input id="route-name" type="text" value="Nowa trasa..."></h1>
         <p class="normalLabel" id="route-info">0 pkt GOT | 0m <-> | 0m ^ | 0m v</p>
     </div>
 
