@@ -20,7 +20,7 @@ API_URL = 'http://localhost:5001'
 
 @app.route("/")
 def index():
-    response = requests.get(API_URL)
+    response = requests.get(API_URL + "/route_segments")
     data = json.loads(response.content)
 
     names, id_mapping = parsers.parse_data_for_browser(data)
@@ -30,7 +30,7 @@ def index():
 
 @app.route("/segment/<segment_id>")
 def segment(segment_id):
-    response = requests.get(API_URL)
+    response = requests.get(API_URL + "/route_segments")
     data = json.loads(response.content)
 
     names, id_mapping = parsers.parse_data_for_browser(data)
@@ -46,8 +46,8 @@ def segment(segment_id):
 
 
 @app.route("/point/<point_id>")
-def pointView(point_id):
-    response = requests.get(API_URL)
+def point(point_id):
+    response = requests.get(API_URL + "/route_segments")
     data = json.loads(response.content)
 
     names, id_mapping = parsers.parse_data_for_browser(data)
@@ -57,6 +57,24 @@ def pointView(point_id):
 
     return render_template('route_element.html', names=names, id_mapping=id_mapping, route_element=point,
                            points=[point], map_init=map_init_point, correlated_segments=correlated_segments)
+
+
+@app.route("/route")
+@app.route("/route/<segment_id>")
+def route(segment_id=None):
+    if segment_id:
+        response = requests.get(API_URL + "/segment/" + segment_id)
+        segment = json.loads(response.content)['segments']
+
+        response = requests.get(f"{API_URL}/point/{segment[0]['point_1']},{segment[0]['point_2']}")
+        points = json.loads(response.content)['points']
+    else:
+        segment = []
+        points = []
+
+    map_init = [(points[0]['x'] + points[1]['x']) / 2, (points[0]['y'] + points[1]['y']) / 2] if points else [49.5, 20]
+
+    return render_template('route.html', segments=segment, points=points, map_init=map_init)
 
 
 @app.route("/routes/<route_id>")
@@ -73,25 +91,6 @@ def routes(route_id):
     routes = [("Super trasa 1", 1)] * 6  # get routes + ids
     return render_template('routes_manager.html', data=myList, points=points, map_init=map_init,
                            correlledSegments=otherSegments, routes=routes)
-
-
-@app.route("/route")
-def routeView():
-    # data = requests.get('http://localhost:5000/GetPoints')
-    # print(data.content)
-    # request.urlopen()
-    # request.
-    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
-    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
-    # points = [[51.5, -0.09], [52.0, -0.10]]
-    points = [[51.5, -0.09]]
-    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
-    if len(points) == 1:
-        otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
-    else:
-        otherSegments = None
-
-    return render_template('route.html', data=myList, points=points, map_init=map_init, correlledSegments=otherSegments)
 
 
 @app.route("/routes/<route_id>/documentation", methods=['GET', 'POST'])

@@ -31,3 +31,22 @@ def get_segments():
                            "punkty_got_w_przeciwnym_kierunku, nazwa, odleglosc, suma_podejsc, suma_zejsc from odcinek")
     return [Segment(id, name, point_1, point_2, region, score, score_reverse, distance, up, down)
             for id, region, point_2, point_1, score, score_reverse, name, distance, up, down in result]
+
+
+def get_points_by_id(points):
+    points_parsed = f"({','.join(points)})"
+    with _connection() as c:
+        result = c.execute(f"select id, nazwa, wspolrzedna_x, wspolrzedna_y from wezel where id in {points_parsed}")
+
+    return [Point(id, name, x, y) for id, name, x, y in result]
+
+
+def get_segments_by_id(segment_list):
+    segments_parsed = f"({','.join(segment_list)})"
+    with _connection() as c:
+        result = c.execute("select id, region_id, wezel_id2, wezel_id, punkty_got_w_kierunku, "
+                           "punkty_got_w_przeciwnym_kierunku, nazwa, odleglosc, suma_podejsc, suma_zejsc from odcinek "
+                           f"where id in {segments_parsed}")
+
+    return [Segment(id, name, point_1, point_2, region, score, score_reverse, distance, up, down)
+            for id, region, point_2, point_1, score, score_reverse, name, distance, up, down in result]

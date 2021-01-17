@@ -27,6 +27,13 @@
     font-weight: bold;
 }
 
+.importantLabel input {
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+}
+
 .normalLabel {
     font-size: 32px;
 }
@@ -36,28 +43,36 @@
     width: 1em;
 }
 
-
 .flexElement ul {
-
-    margin-top: 1.5em;
     list-style-type: none;
 }
 
 .bigListItems a {
     height: 2.5em;
 }
-.flexElement ul li p{
+
+.bigListItems a:hover {
+    z-index: 3;
+}
+
+.flexElement ul li {
+    height: 2.5em;
+}
+
+.flexElement ul li p {
     background-color: white;
     line-height: 2.5em;
-    padding: 0.2em 1em;
+    padding: 0.25em 1em;
     border: 1px solid black;
     box-sizing: border-box;
     display: inline;
 }
 
 .arrowImg {
+    transform: rotate(90deg);
     height: 2em;
     width: 2em;
+    cursor: pointer;
 }
 
 .routeHeader {

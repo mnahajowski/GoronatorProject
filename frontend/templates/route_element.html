@@ -38,9 +38,11 @@
 
                 {% endif %}
             </div>
-            <button class="btn btn-primary btn-lg addButton">
-                Dodaj do nowej trasy
-            </button>
+            {% if points.__len__() > 1 %}
+                <button class="btn btn-primary btn-lg addButton">
+                    Dodaj do nowej trasy
+                </button>
+            {% endif %}
         </div>
         <div id="map" class="flexElement"></div>
     </div>
