@@ -58,15 +58,29 @@ function addMarker(x, y, text, color, toNew) {
         markersNew.push([x, y, text, color, marker]);
         marker.addTo(secondaryMap);
     } else {
-        markersOld.push([x, y, text, color]);
+        markersOld.push([x, y, text, color, marker]);
         marker.addTo(mainMap);
     }
 }
 
 
 function removeNewMarkers() {
+    let temp = [];
     for (let marker of markersNew) {
         if (markersOld.findIndex(m => m[2] === marker[2]) === -1)
             secondaryMap.removeLayer(marker[4]);
+        else
+            temp.push(marker);
     }
+
+    markersNew = temp;
+}
+
+
+function removeOldMarkers() {
+    for (let marker of markersOld) {
+        mainMap.removeLayer(marker[4]);
+    }
+
+    markersOld = []
 }

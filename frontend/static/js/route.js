@@ -1,4 +1,6 @@
 let routeSegments = []
+let correlatedSegments = []
+let selectedSegment = null
 let maxId = 0
 
 function hideModal() {
@@ -13,17 +15,23 @@ function showModal() {
         let lastPointId;
 
         if (routeSegments[routeSegments.length - 1].direction)
-            lastPointId = routeSegments[routeSegments.length - 1].point_1
-        else
             lastPointId = routeSegments[routeSegments.length - 1].point_2
+        else
+            lastPointId = routeSegments[routeSegments.length - 1].point_1
 
         fetch("http://localhost:5001/correlated/" + lastPointId)
             .then(res => res.json())
-            .then(data => addCorrelatedSegments(data))
+            .then(data => {
+                correlatedSegments = data.segments
+                addCorrelatedSegments(data)
+            })
     } else
         fetch("http://localhost:5001/segments")
             .then(res => res.json())
-            .then(data => addCorrelatedSegments(data))
+            .then(data => {
+                correlatedSegments = data.segments
+                addCorrelatedSegments(data)
+            })
 
     initSecondaryMap("secondaryMap")
 }
@@ -32,9 +40,10 @@ function showModal() {
 function onCorrelatedClick(name, point_1, point_2) {
     let segments = document.getElementsByClassName("correlledSegments");
     for (let segment of segments) {
-        if (segment.text === name)
+        if (segment.text === name) {
             segment.style.backgroundColor = "#44AAEE";
-        else
+            selectedSegment = correlatedSegments[parseInt(segment.getAttribute('data-segment-index'))];
+        } else
             segment.style.backgroundColor = "white";
     }
 
@@ -87,23 +96,58 @@ function addSegment(segment) {
             segment.direction = segment.point_1 === last.point_2;
         else {
             segment.direction = segment.point_1 === last.point_1;
-            reverseName(segment);
         }
+
+        if (!segment.direction)
+            reverseName(segment);
 
         routeSegments.push(segment)
     }
 }
 
-function reverseSegment(index) {
-    let segmentIndex = routeSegments.findIndex(s => s.index === index);
-    let segment = routeSegments[segmentIndex];
-    segment.direction = !segment.direction;
-    reverseName(segment)
-
-    routeSegments = routeSegments.slice(0, segmentIndex + 1)
+function onNewSegmentChoice() {
+    addSegment(selectedSegment)
 
     updateRouteInfo()
     addSegmentsToList()
+
+    fetch(`http://localhost:5001/point/${selectedSegment.point_1},${selectedSegment.point_2}`)
+        .then(res => res.json())
+        .then(points => {
+            for (let point of points.points)
+                if (markersOld.findIndex(m => m[2] === point.name) === -1)
+                    addMarker(point['x'], point['y'], point['name'], 'blue')
+        })
+
+    hideModal()
+}
+
+function reverseSegment(index) {
+    let segmentIndex = routeSegments.findIndex(s => s.index === index);
+    routeSegments = routeSegments.slice(0, segmentIndex + 1).reverse()
+
+    for (let i = 0; i < routeSegments.length; i++) {
+        routeSegments[i].direction = !routeSegments[i].direction;
+        reverseName(routeSegments[i]);
+    }
+
+    updateRouteInfo()
+    addSegmentsToList()
+
+    if (secondaryMap === undefined)
+        initSecondaryMap('secondaryMap')
+
+    removeOldMarkers()
+    removeNewMarkers()
+
+    for (let segment of routeSegments) {
+        fetch(`http://localhost:5001/point/${segment.point_1},${segment.point_2}`)
+            .then(res => res.json())
+            .then(points => {
+                for (let point of points.points)
+                    addMarker(point['x'], point['y'], point['name'], 'blue')
+        })
+    }
 }
 
 function addSegmentsToList() {
@@ -143,11 +187,14 @@ function addCorrelatedSegments(segments) {
     let correlatedList = document.getElementById("correlated-list");
     correlatedList.innerHTML = ""
 
+    let i = 0
     for (let segment of segments) {
         let template = document.createElement('template');
-        template.innerHTML = `<a class="list-group-item list-group-item-action correlledSegments"
+        template.innerHTML = `<a class="list-group-item list-group-item-action correlledSegments" data-segment-index="${i}"
                                onclick="onCorrelatedClick('${segment.name}', ${segment.point_1}, ${segment.point_2})">${segment.name}</a>`
         correlatedList.appendChild(template.content.firstChild)
+
+        i++;
     }
 }
 
