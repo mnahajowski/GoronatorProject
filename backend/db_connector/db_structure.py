@@ -105,16 +105,16 @@ class Trasa(Base):
     __tablename__ = 'trasa'
 
     id = Column(Integer, primary_key=True, server_default=text("nextval('trasa_id_seq'::regclass)"))
+    nazwa = Column(String, nullable=False)
     turysta_id = Column(ForeignKey('turysta.id'), nullable=False)
-    przodownik_id = Column(ForeignKey('przodownik.id'), nullable=False)
     got_id = Column(ForeignKey('got.id'))
     punkty_got = Column(Integer, nullable=False)
-    status = Column(Integer)
+    status = Column(ForeignKey('status_trasy.id'))
     data_zweryfikowania = Column(Date)
 
     got = relationship('Got')
-    przodownik = relationship('Przodownik')
     turysta = relationship('Turysta')
+    status_trasy = relationship('StatusTrasy')
 
 
 class Zamkniecie(Base):

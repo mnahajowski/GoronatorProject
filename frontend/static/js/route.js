@@ -152,19 +152,44 @@ function addCorrelatedSegments(segments) {
 }
 
 function saveRoute() {
-    let route = {}
+    let route = {};
 
-    route.name = document.getElementById('route-name').textContent
-    route.segments = []
+    route.name = document.getElementById('route-name').textContent;
+    route.segments = [];
+    route.tourist_id = 1;  // get tourist id
+    route.score = 0;
 
     for (segment of routeSegments) {
-        let newSegment = {}
-        newSegment.segment_id = segment.id
-        newSegment.direction = segment.direction
-        route.segments.push(newSegment)
+        let newSegment = {};
+        newSegment.segment_id = segment.id;
+        newSegment.direction = segment.direction;
+        newSegment.score = segment.direction ? segment.score : segment.score_reverse;
+
+        route.segments.push(newSegment);
+
+        route.score += newSegment.score;
     }
 
+    console.log("before send")
 
+    $.post("http://localhost:5001/new_route", route, (data, status) => console.log(`${data} and status is ${status}`))
 
-    window.location.href = "/"
+    // const url = "http://localhost:5001/new_route";
+    // const payload = {
+    //     headers: {
+    //         "content-type": "application/json; charset=UTF-8",
+    //         "Access-Control-Allow-Origin": "*"
+    //     },
+    //     body: route,
+    //     method: "POST"
+    // };
+    //
+    // fetch(url, payload)
+    //     .then(data => data.json())
+    //     .then(res => console.log(res))
+    //     .catch(error => console.log(error))
+
+    console.log("after send")
+
+    // window.location.href = "/routes"
 }

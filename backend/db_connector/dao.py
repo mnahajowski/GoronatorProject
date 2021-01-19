@@ -1,5 +1,7 @@
 import sqlalchemy
+from sqlalchemy import insert
 from backend.db_connector.model.data_models import *
+from backend.db_connector.db_structure import *
 
 import json
 import os
@@ -59,3 +61,10 @@ def get_correlated_segments(point_id):
 
     return [Segment(id, name, point_1, point_2, region, score, score_reverse, distance, up, down)
             for id, region, point_2, point_1, score, score_reverse, name, distance, up, down in result]
+
+
+def insert_route(route):
+    with _connection() as c:
+        ins = insert(Trasa, values=[{"nazwa": route.name, "turysta_id": route.tourist_id, "punkty_got": route.score,
+                                     "status": 1}])
+        c.execute(ins)

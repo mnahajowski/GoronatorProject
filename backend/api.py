@@ -1,9 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, make_response
 
 from endpoints.points import points
 
 app = Flask(__name__)
-ALLOWED_URLS = 'http://localhost:5000'
+ALLOWED_URLS = '*'  # 'http://localhost:5000'
 
 
 @app.route("/route_segments")
@@ -42,6 +42,17 @@ def points_by_id(point_list):
 def correlated(point_id):
     segments = points.get_correlated_segments(point_id)
     response = jsonify({'segments': segments})
+    response.headers.add('Access-Control-Allow-Origin', ALLOWED_URLS)
+    return response
+
+
+@app.route('/new_route', methods=["POST"])
+def insert_route():
+    a = request.values, request.view_args
+    b = request
+
+    print(request)
+    response = jsonify({"status": 200})
     response.headers.add('Access-Control-Allow-Origin', ALLOWED_URLS)
     return response
 

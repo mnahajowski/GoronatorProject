@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 
 
 @dataclass
@@ -21,3 +22,14 @@ class Segment:
     distance: int
     height_diff_up: int
     height_diff_down: int
+
+
+@dataclass
+class Route:
+    id: int
+    name: str
+    tourist_id: int
+    got_id: int
+    score: int
+    status: int
+    verification_date: datetime

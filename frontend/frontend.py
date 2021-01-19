@@ -77,6 +77,7 @@ def route(segment_id=None):
     return render_template('route.html', segments=segment, points=points, map_init=map_init)
 
 
+@app.route("/routes")
 @app.route("/routes/<route_id>")
 def routes(route_id):
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
