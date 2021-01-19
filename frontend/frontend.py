@@ -79,7 +79,7 @@ def route(segment_id=None):
 
 @app.route("/routes")
 @app.route("/routes/<route_id>")
-def routes(route_id):
+def routes(route_id=1):
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
     myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
     # points = [[51.5, -0.09], [52.0, -0.10]]

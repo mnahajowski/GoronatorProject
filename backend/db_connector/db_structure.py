@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, Float, ForeignKey, Integer, String, text
+from sqlalchemy import Column, Date, Float, ForeignKey, Integer, String, text, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -142,7 +142,7 @@ class OdcinekTrasy(Base):
     odcinek_id = Column(ForeignKey('odcinek.id'), nullable=False)
     trasa_id = Column(ForeignKey('trasa.id'), nullable=False)
     punkty_got = Column(Integer)
-    kierunek = Column(String(255))
+    kierunek = Column(Boolean)
 
     odcinek = relationship('Odcinek')
     trasa = relationship('Trasa')

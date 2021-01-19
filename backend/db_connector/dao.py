@@ -64,7 +64,19 @@ def get_correlated_segments(point_id):
 
 
 def insert_route(route):
+    table = Trasa.__table__
     with _connection() as c:
-        ins = insert(Trasa, values=[{"nazwa": route.name, "turysta_id": route.tourist_id, "punkty_got": route.score,
-                                     "status": 1}])
+        ins = table.insert().returning(table.c.id).values([{"nazwa": route.name, "turysta_id": route.tourist_id,
+                                                            "punkty_got": route.score, "status": 1}])
+        result = c.execute(ins)
+        [inserted_id] = result.fetchone()
+
+    return inserted_id
+
+
+def insert_route_segments(route_segments):
+    with _connection() as c:
+        ins = insert(OdcinekTrasy, values=[{"odcinek_id": segment.segment_id, "trasa_id": segment.route_id,
+                                            "punkty_got": segment.score, "kierunek": segment.direction}
+                                           for segment in route_segments])
         c.execute(ins)

@@ -33,3 +33,12 @@ class Route:
     score: int
     status: int
     verification_date: datetime
+
+
+@dataclass
+class RouteSegment:
+    id: int
+    segment_id: int
+    route_id: int
+    score: int
+    direction: bool

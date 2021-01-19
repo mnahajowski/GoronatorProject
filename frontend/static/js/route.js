@@ -170,26 +170,22 @@ function saveRoute() {
         route.score += newSegment.score;
     }
 
-    console.log("before send")
+    const url = "http://localhost:5001/new_route";
+    const payload = {
+        headers: {
+            "content-type": "application/json; charset=UTF-8",
+        },
+        mode: 'no-cors',
+        body: JSON.stringify(route),
+        method: "POST"
+    };
 
-    $.post("http://localhost:5001/new_route", route, (data, status) => console.log(`${data} and status is ${status}`))
-
-    // const url = "http://localhost:5001/new_route";
-    // const payload = {
-    //     headers: {
-    //         "content-type": "application/json; charset=UTF-8",
-    //         "Access-Control-Allow-Origin": "*"
-    //     },
-    //     body: route,
-    //     method: "POST"
-    // };
-    //
-    // fetch(url, payload)
-    //     .then(data => data.json())
-    //     .then(res => console.log(res))
-    //     .catch(error => console.log(error))
-
-    console.log("after send")
-
-    // window.location.href = "/routes"
+    fetch(url, payload)
+        .then(res => {
+            window.alert("Successfully saved the route!")
+            let icon = document.getElementById('save-icon')
+            icon.setAttribute("src", "/static/images/saved-icon.svg")
+            icon.onclick = () => 0
+            icon.style.cursor = 'default'
+        })
 }
