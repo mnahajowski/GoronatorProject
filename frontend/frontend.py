@@ -7,6 +7,8 @@ import parsers
 import requests
 import json
 
+DEFAULT_MAP_INIT = [49.5, 20]
+
 app = Flask(__name__)
 DEBUG = True
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'images', 'storage')
@@ -72,26 +74,47 @@ def route(segment_id=None):
         segment = []
         points = []
 
-    map_init = [(points[0]['x'] + points[1]['x']) / 2, (points[0]['y'] + points[1]['y']) / 2] if points else [49.5, 20]
+    map_init = [(points[0]['x'] + points[1]['x']) / 2, (points[0]['y'] + points[1]['y']) / 2] if points else DEFAULT_MAP_INIT
 
     return render_template('route.html', segments=segment, points=points, map_init=map_init)
 
 
-@app.route("/routes")
-@app.route("/routes/<route_id>")
-def routes(route_id=1):
-    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
-    myList = [['Morskie Oko - Rysy', 2, 2.3, 1200]]
-    # points = [[51.5, -0.09], [52.0, -0.10]]
-    points = [[51.5, -0.09]]
-    map_init = [sum(x[0] for x in points) / len(points), sum(x[1] for x in points) / len(points)]
-    if len(points) == 1:
-        otherSegments = ['Odcinek1', 'Odcinek2', 'Odcinek3']
+@app.route("/routes/<tourist_id>")
+@app.route("/routes/<tourist_id>/<route_id>")
+def routes(tourist_id, route_id=False):
+    response = requests.get(API_URL + "/routes/" + tourist_id)
+    routes = json.loads(response.content)['routes']
+
+    if route_id:
+        response = requests.get(API_URL + "/route/full/" + route_id)
+        route = json.loads(response.content)
+
+        if route['segments']:
+            map_init = route['segments'][len(route['segments']) // 2]['segment']['point_1']['x'], \
+                       route['segments'][len(route['segments']) // 2]['segment']['point_1']['y']
+        else:
+            map_init = DEFAULT_MAP_INIT
+
+        points = [seg['segment']['point_1'] for seg in route['segments']] + [seg['segment']['point_2']
+                                                                             for seg in route['segments']]
+        ids = set()
+        filtered_points = []
+
+        for point in points:
+            if point['id'] not in ids:
+                ids.add(point['id'])
+                filtered_points.append(point)
+
+        segments = [{**seg['segment'], 'direction': seg['direction']} for seg in route['segments']]
+        route_name = route['name']
     else:
-        otherSegments = None
-    routes = [("Super trasa 1", 1)] * 6  # get routes + ids
-    return render_template('routes_manager.html', data=myList, points=points, map_init=map_init,
-                           correlledSegments=otherSegments, routes=routes)
+        segments = []
+        filtered_points = []
+        map_init = DEFAULT_MAP_INIT
+        route_name = ""
+
+    return render_template('routes_manager.html', segments=segments, points=filtered_points, map_init=map_init,
+                           routes=list(routes.items()), tourist_id=tourist_id, route_id=route_id, route_name=route_name)
 
 
 @app.route("/routes/<route_id>/documentation", methods=['GET', 'POST'])

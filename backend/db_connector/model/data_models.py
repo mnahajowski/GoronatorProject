@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+from typing import Union, List
+
 
 @dataclass
 class Point:
@@ -14,8 +16,8 @@ class Point:
 class Segment:
     id: int
     name: str
-    point_1: int
-    point_2: int
+    point_1: Union[int, Point]
+    point_2: Union[int, Point]
     region: int
     score: int
     score_reverse: int
@@ -25,20 +27,20 @@ class Segment:
 
 
 @dataclass
+class RouteSegment:
+    id: int
+    segment_id: Union[int, Segment]
+    score: int
+    direction: bool
+
+
+@dataclass
 class Route:
     id: int
     name: str
     tourist_id: int
+    segments: List[Union[int, RouteSegment]]
     got_id: int
     score: int
     status: int
     verification_date: datetime
-
-
-@dataclass
-class RouteSegment:
-    id: int
-    segment_id: int
-    route_id: int
-    score: int
-    direction: bool

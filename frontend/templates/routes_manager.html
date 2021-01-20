@@ -1,12 +1,42 @@
-{% block styles %}<link rel="stylesheet" href="/static/styles/documentation.css">
-<link rel="stylesheet" href="/static/styles/routes_manager.css">
+{% block styles %}
+    <link rel="stylesheet" href="/static/styles/menu.css">
+    <link rel="stylesheet" href="/static/styles/routes_manager.css">
 {% endblock %}
+
 <div class="menu">
     <span>Twoje trasy:</span>
     {% for route in routes %}
-    <a href="/routes/{{route[1]}}">{{ route[0] }}</a>
+        <a href="/routes/{{ tourist_id }}/{{ route[0] }}">{{ route[1] }}</a>
     {% endfor %}
 </div>
+
 <div class="plannerView">
-    {%  include "route.html" %}
+    {% include "route.html" %}
 </div>
+
+{% if route_id %}
+    <script>
+        document.getElementById('route-name').value = "{{ route_name }}"
+
+        function updateRoute() {
+            let route = getRouteData()
+
+            const url = "http://localhost:5001/update_route/{{ route_id }}";
+            const payload = {
+                headers: {
+                    "content-type": "application/json; charset=UTF-8",
+                },
+                mode: 'no-cors',
+                body: JSON.stringify(route),
+                method: "POST"
+            };
+
+            fetch(url, payload)
+                .then(res => {
+                    window.alert("Successfully updated the route!")
+                })
+        }
+
+        document.getElementById('save-icon').onclick = updateRoute;
+    </script>
+{% endif %}

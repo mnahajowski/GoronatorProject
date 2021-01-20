@@ -3,6 +3,8 @@ from sqlalchemy import insert
 from backend.db_connector.model.data_models import *
 from backend.db_connector.db_structure import *
 
+from collections import defaultdict
+
 import json
 import os
 
@@ -74,9 +76,85 @@ def insert_route(route):
     return inserted_id
 
 
-def insert_route_segments(route_segments):
+def insert_route_segments(route_segments, route_id):
     with _connection() as c:
-        ins = insert(OdcinekTrasy, values=[{"odcinek_id": segment.segment_id, "trasa_id": segment.route_id,
+        ins = insert(OdcinekTrasy, values=[{"odcinek_id": segment.segment_id, "trasa_id": route_id,
                                             "punkty_got": segment.score, "kierunek": segment.direction}
                                            for segment in route_segments])
         c.execute(ins)
+
+
+def get_route_names(tourist_id):
+    with _connection() as c:
+        result = c.execute("select trasa.id, trasa.nazwa from trasa "
+                           f"where trasa.turysta_id = {tourist_id}")
+
+        return {id: name for id, name in result}
+
+
+def get_full_route(route_id):
+    with _connection() as c:
+        result = c.execute(f"""select * from trasa
+                           full join odcinek_trasy on trasa.id = odcinek_trasy.trasa_id
+                           full join odcinek on odcinek_trasy.odcinek_id = odcinek.id
+                           full join wezel on odcinek.wezel_id = wezel.id or odcinek.wezel_id2 = wezel.id
+                           where trasa.id = {route_id}""")
+
+        route_segments = defaultdict(lambda: {})
+        points = {}
+        route = {}
+
+        for _, tourist_id, got_id, route_score, status, route_date, route_name, route_segment_id, _, _, _, direction, \
+            segment_id, region, point_2, point_1, score, score_reverse, segment_name, distance, \
+            height_diff_up, height_diff_down, point_id, point_name, x, y in result:
+
+            route['name'] = route_name
+            route['score'] = route_score
+            route['status'] = status
+            route['tourist_id'] = tourist_id
+            route['got_id'] = got_id
+            route['date'] = route_date
+
+            if point_id:
+                points[point_id] = Point(point_id, point_name, x, y)
+                route_segments[route_segment_id]['segment'] = Segment(id=segment_id,
+                                                                      name=segment_name,
+                                                                      point_1=point_1,
+                                                                      point_2=point_2,
+                                                                      region=region,
+                                                                      score=score,
+                                                                      score_reverse=score_reverse,
+                                                                      distance=distance,
+                                                                      height_diff_up=height_diff_up,
+                                                                      height_diff_down=height_diff_down)
+
+                route_segments[route_segment_id]['direction'] = direction
+
+        for route_segment in route_segments.values():
+            route_segment['segment'].point_1 = points[route_segment['segment'].point_1]
+            route_segment['segment'].point_2 = points[route_segment['segment'].point_2]
+
+        return Route(id=route_id,
+                     name=route['name'],
+                     tourist_id=route['tourist_id'],
+                     got_id=route['got_id'],
+                     segments=list(route_segments.values()),
+                     score=route['score'],
+                     status=route['status'],
+                     verification_date=route['date'])
+
+
+def update_route(route_id, route):
+    table = Trasa.__table__
+    with _connection() as c:
+        ins = table.update().where(table.c.id == route_id).values({"nazwa": route.name, "punkty_got": route.score,
+                                                                   "status": route.status})
+        c.execute(ins)
+
+
+def delete_route_segments(route_id):
+    with _connection() as c:
+        table = OdcinekTrasy.__table__
+        delete = table.delete().where(table.c.trasa_id == route_id)
+
+        c.execute(delete)

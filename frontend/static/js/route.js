@@ -19,6 +19,9 @@ function showModal() {
         else
             lastPointId = routeSegments[routeSegments.length - 1].point_1
 
+        if (typeof lastPointId === "object")
+            lastPointId = lastPointId.id
+
         fetch("http://localhost:5001/correlated/" + lastPointId)
             .then(res => res.json())
             .then(data => {
@@ -88,15 +91,18 @@ function addSegment(segment) {
     segment.index = maxId++;
 
     if (routeSegments.length === 0) {
-        segment.direction = true
+        if (segment.direction === undefined)
+            segment.direction = true
+
         routeSegments.push(segment)
     } else {
         let last = routeSegments[routeSegments.length - 1]
-        if (last.direction)
-            segment.direction = segment.point_1 === last.point_2;
-        else {
-            segment.direction = segment.point_1 === last.point_1;
-        }
+
+        if (segment.direction === undefined)
+            if (last.direction)
+                segment.direction = segment.point_1 === last.point_2;
+            else
+                segment.direction = segment.point_1 === last.point_1;
 
         if (!segment.direction)
             reverseName(segment);
@@ -198,10 +204,10 @@ function addCorrelatedSegments(segments) {
     }
 }
 
-function saveRoute() {
+function getRouteData() {
     let route = {};
 
-    route.name = document.getElementById('route-name').textContent;
+    route.name = document.getElementById('route-name').value;
     route.segments = [];
     route.tourist_id = 1;  // get tourist id
     route.score = 0;
@@ -216,6 +222,11 @@ function saveRoute() {
 
         route.score += newSegment.score;
     }
+    return route;
+}
+
+function saveRoute() {
+    let route = getRouteData();
 
     const url = "http://localhost:5001/new_route";
     const payload = {

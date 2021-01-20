@@ -59,5 +59,32 @@ def insert_route():
     return response
 
 
+@app.route('/update_route/<route_id>', methods=["POST"])
+def update_route(route_id):
+    route = json.loads(request.data)
+
+    routes.update_route(route_id, route)
+
+    response = jsonify({"status": 200})
+    response.headers.add('Access-Control-Allow-Origin', ALLOWED_URLS)
+    return response
+
+
+@app.route('/routes/<tourist_id>')
+def route_list(tourist_id):
+    all_routes = routes.get_route_names(tourist_id)
+    response = jsonify({"routes": all_routes})
+    response.headers.add('Access-Control-Allow-Origin', ALLOWED_URLS)
+    return response
+
+
+@app.route('/route/full/<route_id>')
+def full_route(route_id):
+    route = routes.get_full_route(route_id)
+    response = jsonify(route)
+    response.headers.add('Access-Control-Allow-Origin', ALLOWED_URLS)
+    return response
+
+
 if __name__ == '__main__':
     app.run(host='localhost', port=5001, debug=True)
