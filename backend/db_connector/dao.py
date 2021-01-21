@@ -166,3 +166,18 @@ def delete_route(route_id):
         delete = table.delete().where(table.c.id == route_id)
 
         c.execute(delete)
+
+
+def add_documetnation(route_id, filename):
+    with _connection() as c:
+        ins = insert(DokumentacjaTrasy, values=[{"trasa_id": route_id, "sciezka": filename}])
+        c.execute(ins)
+
+
+def get_all_documentation(route_id):
+    with _connection() as c:
+        result = c.execute("select sciezka from dokumentacja_trasy "
+                           f"where trasa_id = {route_id}")
+
+    a = [path[0] for path in result]
+    return a

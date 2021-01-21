@@ -48,7 +48,7 @@
     display: block;
 }
 
-#modal {
+#image-modal {
     z-index: 1;
     position: absolute;
     top: 0;
@@ -59,7 +59,7 @@
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-#modal img {
+#image-modal img {
     position: absolute;
     top: 50vh;
     left: 50vw;

@@ -12,6 +12,9 @@
     <button class="btn btn-default btn-lg">
         <img id="verification-icon" src="/static/images/share-option.svg" onclick="showModal('Czy chcesz przekazać trasę do weryfikacji?', verification)" title="Zweryfikuj trasę"/>
     </button>
+    <button class="btn btn-default btn-lg">
+        <a href="/routes/{{ tourist_id }}/{{ route_id }}/documentation"><img id="verification-icon" src="/static/images/docs.svg" title="Dokumentacja"/></a>
+    </button>
 </div>
 
 <div class="menu">
@@ -33,3 +36,5 @@
         document.getElementById('save-icon').onclick = () => updateRoute({{ route_id }});
     </script>
 {% endif %}
+
+<script src="/static/js/verification.js"></script>

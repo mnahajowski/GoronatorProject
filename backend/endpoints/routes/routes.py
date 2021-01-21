@@ -56,3 +56,11 @@ def update_route(route_id, route_raw):
 def delete_route(route_id):
     dao.delete_route_segments(route_id)
     dao.delete_route(route_id)
+
+
+def add_documentation(route_id, filename):
+    dao.add_documetnation(route_id, filename)
+
+
+def get_all_documentation(route_id):
+    return dao.get_all_documentation(route_id)

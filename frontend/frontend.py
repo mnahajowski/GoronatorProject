@@ -1,7 +1,4 @@
-import os
-
-from flask import Flask, render_template, request, redirect
-from werkzeug.utils import secure_filename
+from flask import Flask, render_template
 import parsers
 
 import requests
@@ -11,10 +8,8 @@ DEFAULT_MAP_INIT = [49.5, 20]
 
 app = Flask(__name__)
 DEBUG = True
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'images', 'storage')
 
 app.config.from_object(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = '7d441f27d441f27567d441f2b6176a'
 
 API_URL = 'http://localhost:5001'
@@ -95,15 +90,7 @@ def routes(tourist_id, route_id=False):
         else:
             map_init = DEFAULT_MAP_INIT
 
-        points = [seg['segment']['point_1'] for seg in route['segments']] + [seg['segment']['point_2']
-                                                                             for seg in route['segments']]
-        ids = set()
-        filtered_points = []
-
-        for point in points:
-            if point['id'] not in ids:
-                ids.add(point['id'])
-                filtered_points.append(point)
+        filtered_points = parsers.get_route_points(route)
 
         segments = [{**seg['segment'], 'direction': seg['direction']} for seg in route['segments']]
         route_name = route['name']
@@ -117,25 +104,16 @@ def routes(tourist_id, route_id=False):
                            routes=list(routes.items()), tourist_id=tourist_id, route_id=route_id, route_name=route_name)
 
 
-@app.route("/routes/<route_id>/documentation", methods=['GET', 'POST'])
-def documentation(route_id):
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            return redirect(request.url)
+@app.route("/route/<tourist_id>/<route_id>/documentation")
+def documentation(tourist_id, route_id):
+    response = requests.get(API_URL + "/routes/" + tourist_id)
+    routes = json.loads(response.content)['routes']
+    route_name = routes[route_id]
 
-        file = request.files['file']
-
-        if not file.filename:
-            return redirect(request.url)
-        else:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(request.url)
-
-    else:
-        images = ['sample_img.jpg'] * 5  # get images
-        routes = [("Super trasa 1", 1)] * 6  # get routes + ids
-        return render_template('documentation.html', routes=routes, route_id=route_id, images=images)
+    response = requests.get(API_URL + "/documentation/" + route_id)
+    images = json.loads(response.content)['documentation']
+    return render_template('documentation.html', routes=list(routes.items()), route_id=route_id, route_name=route_name,
+                           images=images, api_url=API_URL, tourist_id=tourist_id)
 
 
 if __name__ == '__main__':

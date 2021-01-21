@@ -131,6 +131,7 @@ class DokumentacjaTrasy(Base):
 
     id = Column(Integer, primary_key=True, server_default=text("nextval('dokumentacja_trasy_id_seq'::regclass)"))
     trasa_id = Column(ForeignKey('trasa.id'), nullable=False)
+    sciezka = Column(String(255), nullable=False)
 
     trasa = relationship('Trasa')
 
