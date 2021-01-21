@@ -125,7 +125,7 @@ function onNewSegmentChoice() {
                     addMarker(point['x'], point['y'], point['name'], 'blue')
         })
 
-    hideModal()
+    hideCorrelatedModal()
 }
 
 function reverseSegment(index) {

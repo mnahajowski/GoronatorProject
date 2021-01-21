@@ -13,6 +13,6 @@ function updateRoute(route_id) {
 
     fetch(url, payload)
         .then(res => {
-            window.alert("Successfully updated the route!")
+            window.alert("Trasa zaktualizowana!")
         })
 }

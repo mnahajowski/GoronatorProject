@@ -20,7 +20,10 @@
 
 <script src="/static/js/verification.js"></script>
 
-<img id="verification-icon" class="share-icon" src="/static/images/share-option.svg" onclick="showModal('Czy chcesz przekazać trasę do weryfikacji?', verification)">
+<div class="button-holder">
+    <img id="verification-icon" class="icon" src="/static/images/share-option.svg" onclick="showModal('Czy chcesz przekazać trasę do weryfikacji?', verification)" title="Zweryfikuj">
+    <a href="/routes/{{ tourist_id }}/{{ route_id }}"><img class="icon" src="/static/images/closeButton.svg" title="Wróć"></a>
+</div>
 
 <div class="header">
     <h1>{{ route_name }}</h1>
@@ -30,7 +33,7 @@
 <div class="menu">
     <span>Twoje trasy:</span>
     {% for route in routes %}
-        <a href="/routes/{{ tourist_id }}/{{ route[0] }}">{{ route[1] }}</a>
+        <a href="/route/{{ tourist_id }}/{{ route[0] }}/documentation">{{ route[1] }}</a>
     {% endfor %}
 </div>
 
