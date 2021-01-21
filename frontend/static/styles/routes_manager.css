@@ -14,3 +14,18 @@ body {
 div.flexHolder {
     width: 80vw;
 }
+
+.button-holder {
+    position: absolute;
+    top: 32px;
+    right: 176px;
+    z-index: 3;
+}
+
+.menu-plus {
+    width: 1em;
+}
+
+.menu-plus-holder {
+    text-align: center;
+}

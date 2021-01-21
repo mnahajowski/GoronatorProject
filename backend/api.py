@@ -70,6 +70,15 @@ def update_route(route_id):
     return response
 
 
+@app.route('/delete_route/<route_id>', methods=["POST"])
+def delete_route(route_id):
+    routes.delete_route(route_id)
+
+    response = jsonify({"status": 200})
+    response.headers.add('Access-Control-Allow-Origin', ALLOWED_URLS)
+    return response
+
+
 @app.route('/routes/<tourist_id>')
 def route_list(tourist_id):
     all_routes = routes.get_route_names(tourist_id)

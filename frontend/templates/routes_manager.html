@@ -3,11 +3,23 @@
     <link rel="stylesheet" href="/static/styles/routes_manager.css">
 {% endblock %}
 
+<script src="/static/js/routeManager.js"></script>
+
+<div class="button-holder">
+    <button class="btn btn-default btn-lg">
+        <img id="delete-icon" src="/static/images/trash.svg" onclick="showModal('Czy chcesz usunąć trasę?', () => deleteRoute({{ tourist_id }}, {{ route_id }}))" title="Usuń trasę"/>
+    </button>
+    <button class="btn btn-default btn-lg">
+        <img id="verification-icon" src="/static/images/share-option.svg" onclick="showModal('Czy chcesz przekazać trasę do weryfikacji?', verification)" title="Zweryfikuj trasę"/>
+    </button>
+</div>
+
 <div class="menu">
     <span>Twoje trasy:</span>
     {% for route in routes %}
         <a href="/routes/{{ tourist_id }}/{{ route[0] }}">{{ route[1] }}</a>
     {% endfor %}
+        <a href="/route" class="menu-plus-holder"><img class="menu-plus" src="/static/images/plus-solid-black.svg"></a>
 </div>
 
 <div class="plannerView">
@@ -15,28 +27,9 @@
 </div>
 
 {% if route_id %}
+    <script src="/static/js/routeManagerWithRoute.js"></script>
     <script>
         document.getElementById('route-name').value = "{{ route_name }}"
-
-        function updateRoute() {
-            let route = getRouteData()
-
-            const url = "http://localhost:5001/update_route/{{ route_id }}";
-            const payload = {
-                headers: {
-                    "content-type": "application/json; charset=UTF-8",
-                },
-                mode: 'no-cors',
-                body: JSON.stringify(route),
-                method: "POST"
-            };
-
-            fetch(url, payload)
-                .then(res => {
-                    window.alert("Successfully updated the route!")
-                })
-        }
-
-        document.getElementById('save-icon').onclick = updateRoute;
+        document.getElementById('save-icon').onclick = () => updateRoute({{ route_id }});
     </script>
 {% endif %}

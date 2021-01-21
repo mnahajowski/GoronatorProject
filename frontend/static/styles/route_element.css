@@ -7,6 +7,10 @@
     font-size: 32px;
 }
 
+button img {
+    height: 32px;
+}
+
 .flexHolder {
     position: relative;
     margin-left: auto;

@@ -1,5 +1,5 @@
 .menu {
-    background-color: #ddd;
+    background-color: rgba(222, 222, 222, 0.5);
     width: 12vw;
     min-width: 250px;
     position: absolute;
@@ -7,6 +7,10 @@
     left: 0;
     height: 100vh;
     overflow-y: scroll;
+}
+
+.menu::-webkit-scrollbar {
+  display: none;
 }
 
 .menu a, .menu span {

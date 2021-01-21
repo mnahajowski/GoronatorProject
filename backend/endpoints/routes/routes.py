@@ -51,3 +51,8 @@ def update_route(route_id, route_raw):
 
     dao.insert_route_segments(segments, route_id)
     dao.update_route(route_id, route)
+
+
+def delete_route(route_id):
+    dao.delete_route_segments(route_id)
+    dao.delete_route(route_id)

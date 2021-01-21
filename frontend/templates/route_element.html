@@ -2,7 +2,7 @@
 {% block title %}Góronator{% endblock %}
 {% block styles %}
     <link rel="stylesheet" href="/static/styles/browser.css">
-    <link rel="stylesheet" href="/static/styles/exit_modal.css">
+    <link rel="stylesheet" href="/static/styles/genericModal.css">
     <link rel="stylesheet" href="/static/styles/route_element.css">{% endblock %}
 {% block content %}
 
@@ -10,8 +10,8 @@
         <label for="tags"></label>
         <input class="form-control input-lg smallSearch" id="tags" name="cli" placeholder="Wyszukaj...">
     </div>
-    <button id="toModal" class="btn btn-default btn-lg closeButtonRight">
-        <img src="/static/images/closeButton.svg" width="20"/>
+    <button class="btn btn-default btn-lg closeButtonRight" onclick="showModal('Czy chcesz wyjść?', () => window.location.href = '/')">
+        <img src="/static/images/closeButton.svg"/>
     </button>
     <div class="flexHolder">
         <div class="flexElement">
@@ -39,9 +39,11 @@
                 {% endif %}
             </div>
             {% if points.__len__() > 1 %}
-                <button class="btn btn-primary btn-lg addButton">
-                    Dodaj do nowej trasy
-                </button>
+                <a href="/route/{{ route_element['id'] }}">
+                    <button class="btn btn-primary btn-lg addButton">
+                        Dodaj do nowej trasy
+                    </button>
+                </a>
             {% endif %}
         </div>
         <div id="map" class="flexElement"></div>
@@ -61,9 +63,8 @@
         {{ id_mapping | tojson }}
     </script>
 
-    {% include "exit_modal.html" %}
+    {% include "genericModal.html" %}
 
     <script src="/static/js/browser.js"></script>
-    <script src="/static/js/openModal.js"></script>
 
 {% endblock %}

@@ -3,11 +3,11 @@ let correlatedSegments = []
 let selectedSegment = null
 let maxId = 0
 
-function hideModal() {
+function hideCorrelatedModal() {
     document.getElementById("addSegmentModal").style.display = "none"
 }
 
-function showModal() {
+function showCorrelatedModal() {
     document.getElementById("addSegmentModal").style.display = "block"
 
 
@@ -182,7 +182,7 @@ function addSegmentsToList() {
     }
 
     let template = document.createElement('template');
-    template.innerHTML = '<a id=\"plus-button-holder\" class=\"list-group-item list-group-item-action\" onclick=\"showModal()\">\n' +
+    template.innerHTML = '<a id=\"plus-button-holder\" class=\"list-group-item list-group-item-action\" onclick=\"showCorrelatedModal()\">\n' +
     '    <img class=\"plusButton\" src=\"/static/images/plus-solid-black.svg\">\n</a>';
     segmentList.appendChild(template.content.firstChild)
 }

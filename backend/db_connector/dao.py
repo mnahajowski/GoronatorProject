@@ -158,3 +158,11 @@ def delete_route_segments(route_id):
         delete = table.delete().where(table.c.trasa_id == route_id)
 
         c.execute(delete)
+
+
+def delete_route(route_id):
+    with _connection() as c:
+        table = Trasa.__table__
+        delete = table.delete().where(table.c.id == route_id)
+
+        c.execute(delete)
