@@ -8,8 +8,10 @@ def parse_data_for_browser(data):
 
 def get_element_by_id(id, elements):
     for elem in elements:
-        if elem['id'] == id:
+        if elem.get('id') == id:
             return elem
+
+    return {}
 
 
 def get_correlated_segments(point_id, segments):
@@ -17,8 +19,8 @@ def get_correlated_segments(point_id, segments):
 
 
 def get_route_points(route):
-    points = [seg['segment']['point_1'] for seg in route['segments']] + [seg['segment']['point_2']
-                                                                         for seg in route['segments']]
+    points = [seg['segment']['point_1'] for seg in route.get('segments', [])] + [seg['segment']['point_2']
+                                                                                 for seg in route.get('segments', [])]
     ids = set()
     filtered_points = []
     for point in points:
