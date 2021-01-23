@@ -1,18 +1,23 @@
 import os
 
 from flask import Flask, jsonify, request, send_file, redirect
+from flask_selfdoc import Autodoc
+
 from werkzeug.utils import secure_filename
 
-from endpoints.points import points
-from endpoints.routes import routes
-from file_storage import manager
+from backend.endpoints.points import points
+from backend.endpoints.routes import routes
+from backend.file_storage import manager
 
 import json
 
+
 app = Flask(__name__)
+auto = Autodoc(app)
 FRONTEND_URL = 'http://localhost:5000'
 
 
+@auto.doc()
 @app.route("/route_segments")
 def index():
     """
@@ -25,6 +30,7 @@ def index():
 
 
 @app.route("/segments")
+@auto.doc()
 def segments():
     """
     Obtain all segments
@@ -37,6 +43,7 @@ def segments():
 
 
 @app.route("/segment/<segment_list>")
+@auto.doc()
 def segments_by_id(segment_list):
     """
     Obtain specific segment(s) by id
@@ -50,6 +57,7 @@ def segments_by_id(segment_list):
 
 
 @app.route('/point/<point_list>')
+@auto.doc()
 def points_by_id(point_list):
     """
     Obtain specific points(s) by id
@@ -64,6 +72,7 @@ def points_by_id(point_list):
 
 
 @app.route('/correlated/<point_id>')
+@auto.doc()
 def correlated(point_id):
     """
     Obtain segments correlated with a point
@@ -77,9 +86,9 @@ def correlated(point_id):
 
 
 @app.route('/new_route', methods=["POST"])
+@auto.doc()
 def insert_route():
     """
-    [POST]
     Insert a new route to the database, as a json string representing the Route object
     :return: response 200 if success
     """
@@ -93,9 +102,9 @@ def insert_route():
 
 
 @app.route('/update_route/<route_id>', methods=["POST"])
+@auto.doc()
 def update_route(route_id):
     """
-    [POST]
     Update an existing route, as a json string representing the Route object
     :param route_id: id of the route to update
     :return: response 200 if success
@@ -110,9 +119,9 @@ def update_route(route_id):
 
 
 @app.route('/delete_route/<route_id>', methods=["POST"])
+@auto.doc()
 def delete_route(route_id):
     """
-    [POST]
     Delete an existing route
     :param route_id: id of the route to delete
     :return: response 200 if success
@@ -125,6 +134,7 @@ def delete_route(route_id):
 
 
 @app.route('/routes/<tourist_id>')
+@auto.doc()
 def route_list(tourist_id):
     """
     Obtain all routes that belong to the specific tourist
@@ -138,6 +148,7 @@ def route_list(tourist_id):
 
 
 @app.route('/route/full/<route_id>')
+@auto.doc()
 def full_route(route_id):
     """
     Obtain a route instance
@@ -151,9 +162,9 @@ def full_route(route_id):
 
 
 @app.route('/route/<tourist_id>/<route_id>/documentation', methods=['POST'])
+@auto.doc()
 def documentation_upload(tourist_id, route_id):
     """
-    [POST]
     Upload a documentation file corresponding to a specific route and tourist
     :param tourist_id: id of the tourist
     :param route_id: id of the route
@@ -177,6 +188,7 @@ def documentation_upload(tourist_id, route_id):
 
 
 @app.route('/documentation/<tourist_id>/<route_id>/<image>')
+@auto.doc()
 def documentation(tourist_id, route_id, image):
     """
     Obtain a specific documentation image
@@ -190,6 +202,7 @@ def documentation(tourist_id, route_id, image):
 
 
 @app.route('/documentation/<route_id>')
+@auto.doc()
 def get_all_documentation(route_id):
     """
     Obtain all documentation image names corresponding to the specified route
@@ -197,6 +210,11 @@ def get_all_documentation(route_id):
     :return: A json string of documentation files in format {"documentation": []}
     """
     return jsonify({"documentation": routes.get_all_documentation(route_id)})
+
+
+@app.route('/docs')
+def docs():
+    return auto.html()
 
 
 if __name__ == '__main__':
