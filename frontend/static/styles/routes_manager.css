@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 .plannerView {
     position: absolute;
     top: 0;
@@ -9,4 +13,19 @@
 
 div.flexHolder {
     width: 80vw;
+}
+
+.button-holder {
+    position: absolute;
+    top: 32px;
+    right: 176px;
+    z-index: 3;
+}
+
+.menu-plus {
+    width: 1em;
+}
+
+.menu-plus-holder {
+    text-align: center;
 }

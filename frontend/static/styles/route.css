@@ -14,6 +14,13 @@
     box-sizing: border-box;
     overflow-y: scroll;
     max-height: 80%;
+    width: 20vw;
+    flex: 1 1 0;
+}
+
+.modal-main-section {
+    display: flex;
+    flex-direction: row
 }
 
 .bigListItems {
@@ -27,8 +34,15 @@
     font-weight: bold;
 }
 
+.importantLabel input {
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+}
+
 .normalLabel {
-    font-size: 35px;
+    font-size: 32px;
 }
 
 .plusButton {
@@ -36,28 +50,36 @@
     width: 1em;
 }
 
-
 .flexElement ul {
-
-    margin-top: 1.5em;
     list-style-type: none;
 }
 
 .bigListItems a {
     height: 2.5em;
 }
-.flexElement ul li p{
+
+.bigListItems a:hover {
+    z-index: 3;
+}
+
+.flexElement ul li {
+    height: 2.5em;
+}
+
+.flexElement ul li p {
     background-color: white;
     line-height: 2.5em;
-    padding: 0.2em 1em;
+    padding: 0.25em 1em;
     border: 1px solid black;
     box-sizing: border-box;
     display: inline;
 }
 
 .arrowImg {
+    transform: rotate(90deg);
     height: 2em;
     width: 2em;
+    cursor: pointer;
 }
 
 .routeHeader {
@@ -95,17 +117,71 @@
     width: 50vh;
 }
 
-.btn.btn-default.btn-lg.saveButtonRight {
+.buttons {
     position: absolute;
     top: 32px;
     right: 32px;
 }
 
-.btn.btn-default.btn-lg.closeButtonLeft {
+.modal-buttons {
     position: absolute;
-    top: 32px;
-    left: 32px;
+    bottom: 16px;
+    right: 16px;
 }
+
+#secondaryMap {
+    height: 400px;
+    margin-left:32px;
+    flex: 1 1 0;
+}
+
+button img {
+    width: 32px;
+}
+
+.addModal-content {
+    background-color: rgba(0, 0, 0, 0.7);
+    margin: 5% auto 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 70%;
+    position: relative;
+    height: 70%;
+}
+
+.checkbtn {
+    background-color: white;
+    border: black solid 3px;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.checkbtn:hover{
+    background-color: green;
+    color: white;
+}
+
+.checkbtn img {
+    height: 16px;
+}
+
+#addSegmentModal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
 
 @media all and (max-width: 1250px) {
     .flexHolder {

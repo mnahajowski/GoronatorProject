@@ -1,0 +1,73 @@
+.importantLabel {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.normalLabel {
+    font-size: 32px;
+}
+
+button img {
+    height: 32px;
+}
+
+.flexHolder {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    width: 90vw;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flexElement {
+    flex: 1 1 0;
+    margin: 8px 16px 0;
+    vertical-align: top;
+    width: 99%;
+}
+
+.btn.btn-default.btn-lg.closeButtonRight {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+}
+
+
+.btn.btn-primary.btn-lg.addButton {
+    margin-top: 128px;
+    width: 50%;
+    height: 15%;
+}
+
+.form-control.input-lg.smallSearch{
+    font-size:12pt;
+    width:50%;
+    margin-top:1%;
+    margin-left:auto;
+    margin-right:auto;
+    z-index: 3;
+}
+
+#map {
+    height: 50vh;
+    width: 50vh;
+    z-index: 2;
+}
+
+.correlated-list {
+    margin: 32px 32px 32px 0;
+    overflow-y: scroll;
+}
+
+@media all and (max-width: 1250px) {
+    .flexHolder {
+        flex-flow:column wrap;
+    }
+    .flexElement {
+        flex: 1 1 auto;
+        margin-top: 10%;
+        margin-bottom: 10%;
+    }
+}

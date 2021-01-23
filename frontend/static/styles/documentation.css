@@ -14,6 +14,13 @@
     margin: 0;
 }
 
+.button-holder {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    z-index: 3;
+}
+
 .grid-elem {
     position: relative;
     max-width: 100%;
@@ -23,7 +30,7 @@
 
 .grid-elem img {
     position: absolute;
-    width: 25%;
+    height: 40%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -48,7 +55,7 @@
     display: block;
 }
 
-#modal {
+#image-modal {
     z-index: 1;
     position: absolute;
     top: 0;
@@ -59,7 +66,7 @@
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-#modal img {
+#image-modal img {
     position: absolute;
     top: 50vh;
     left: 50vw;
@@ -71,38 +78,8 @@ form {
     display: none;
 }
 
-.menu {
-    background-color: #ddd;
-    width: 12vw;
-    min-width: 250px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-}
-
-.menu a, .menu span {
-    color: black;
-    display: block;
-    padding: 24px;
-    text-decoration: none;
-    font-size: 24px;
-}
-
-.menu span {
-    font-weight: bold;
-    font-size: 30px;
-}
-
-.menu a:hover {
-    background-color: #ccc;
-}
-
-.share-icon {
-    position: absolute;
+.icon {
     width: 32px;
-    height: 32px;
-    top: 32px;
-    right: 32px;
     cursor: pointer;
+    margin-left: 32px;
 }

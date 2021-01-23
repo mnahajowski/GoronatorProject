@@ -1,0 +1,53 @@
+#modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+#modal-ok-button {
+  background-color: dodgerblue;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+#modal-ok-button:hover{
+    background-color: white;
+    color: black;
+}
+
+.cancelbtn {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.cancelbtn:hover{
+    background-color: white;
+    color: black;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 20% auto 30% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+}

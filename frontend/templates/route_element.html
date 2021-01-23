@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Góronator{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/styles/browser.css">
+    <link rel="stylesheet" href="/static/styles/genericModal.css">
+    <link rel="stylesheet" href="/static/styles/route_element.css">{% endblock %}
+{% block content %}
+
+    <div class="ui-widget">
+        <label for="tags"></label>
+        <input class="form-control input-lg smallSearch" id="tags" name="cli" placeholder="Wyszukaj...">
+    </div>
+    <button class="btn btn-default btn-lg closeButtonRight" onclick="showModal('Czy chcesz wyjść?', () => window.location.href = '/')">
+        <img src="/static/images/closeButton.svg"/>
+    </button>
+    <div class="flexHolder">
+        <div class="flexElement">
+            <div class="segmentDescription">
+                <div class="importantLabel">
+                    {{ route_element['name'] }}
+                </div>
+                {% if points.__len__() > 1 %}
+                    <div class="normalLabel">
+                        {{ route_element['score'] }}/{{ route_element['score_reverse'] }} pkt GOT
+                        | {{ route_element['distance'] }}m <-> | {{ route_element['height_diff_up'] }}m ^
+                        | {{ route_element['height_diff_down'] }}m v
+                    </div>
+                {% else %}
+                    <div class="normalLabel">
+                        Możliwe odcinki
+                    </div>
+                    <div class="list-group correlated-list">
+                        {% for segment in correlated_segments %}
+                            <a href="/segment/{{ segment['id'] }}"
+                               class="list-group-item list-group-item-action">{{ segment['name'] }}</a>
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+            </div>
+            {% if points.__len__() > 1 %}
+                <a href="/route/{{ route_element['id'] }}">
+                    <button class="btn btn-primary btn-lg addButton">
+                        Dodaj do nowej trasy
+                    </button>
+                </a>
+            {% endif %}
+        </div>
+        <div id="map" class="flexElement"></div>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/maps.js') }}"></script>
+
+    <script>
+        initMap({{ map_init[0] }}, {{ map_init[1] }}, 'map')
+
+        for (let point of {{ points | tojson }}) {
+            addMarker(point['x'], point['y'], point['name']);
+        }
+
+        const names = {{ names | tojson }};
+        const mapping =
+        {{ id_mapping | tojson }}
+    </script>
+
+    {% include "genericModal.html" %}
+
+    <script src="/static/js/browser.js"></script>
+
+{% endblock %}

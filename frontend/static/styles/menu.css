@@ -1,0 +1,31 @@
+.menu {
+    background-color: rgba(222, 222, 222, 0.5);
+    width: 12vw;
+    min-width: 250px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.menu::-webkit-scrollbar {
+  display: none;
+}
+
+.menu a, .menu span {
+    color: black;
+    display: block;
+    padding: 24px;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+.menu span {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.menu a:hover {
+    background-color: #ccc;
+}

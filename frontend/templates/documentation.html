@@ -1,41 +1,50 @@
 {% extends "base.html" %}
 {% block title %}Documentation{% endblock %}
-{% block styles %}<link rel="stylesheet" href="/static/styles/documentation.css">{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="/static/styles/documentation.css">
+    <link rel="stylesheet" href="/static/styles/menu.css">
+    <link rel="stylesheet" href="/static/styles/genericModal.css">
+{% endblock %}
 {% block content %}
 
 <script>
-    function hideModal() {
-        document.getElementById("modal").style.display = "none"
+    function hideImageModal() {
+        document.getElementById("image-modal").style.display = "none"
     }
 
-    function showModal(imageSrc) {
-        document.getElementById("modal").style.display = "block"
-        document.getElementById("modal-img").setAttribute("src", imageSrc)
+    function showImageModal(imageSrc) {
+        document.getElementById("image-modal").style.display = "block"
+        document.getElementById("image-modal-img").setAttribute("src", imageSrc)
     }
 </script>
 
-<img class="share-icon" src="/static/images/share-option.svg">
+<script src="/static/js/verification.js"></script>
+
+<div class="button-holder">
+    <img id="verification-icon" class="icon" src="/static/images/share-option.svg" onclick="showModal('Czy chcesz przekazać trasę do weryfikacji?', verification)" title="Zweryfikuj">
+    <a href="/routes/{{ tourist_id }}/{{ route_id }}"><img class="icon" src="/static/images/closeButton.svg" title="Wróć"></a>
+</div>
 
 <div class="header">
-    <h1>Nazwa trasy</h1>
+    <h1>{{ route_name }}</h1>
     <h5>Dokumentacja</h5>
 </div>
 
 <div class="menu">
     <span>Twoje trasy:</span>
     {% for route in routes %}
-    <a href="/routes/{{route[1]}}/documentation">{{ route[0] }}</a>
+        <a href="/route/{{ tourist_id }}/{{ route[0] }}/documentation">{{ route[1] }}</a>
     {% endfor %}
 </div>
 
 <div id="wrapper">
     {% for image_path in images %}
-    <img class="grid-elem" src="/static/images/{{ image_path }}" onclick="showModal('/static/images/{{ image_path }}')">
+    <img class="grid-elem" src="{{ api_url }}/documentation/{{ tourist_id }}/{{ route_id }}/{{ image_path }}" onclick="showImageModal('{{ api_url }}/documentation/{{ tourist_id }}/{{ route_id }}/{{ image_path }}')">
     {% endfor %}
 
     <div class="grid-elem plus-holder" onclick="document.getElementById('file').click()">
         <img class="img-add" src="/static/images/plus-solid.svg">
-        <form method="POST" action="/routes/{{route_id}}/documentation" enctype="multipart/form-data">
+        <form method="POST" action="{{ api_url }}/route/{{ tourist_id }}/{{ route_id }}/documentation" enctype="multipart/form-data">
             <input id="file" type="file" name="file" onchange="form.submit()" accept="image/*">
         </form>
     </div>
@@ -43,8 +52,10 @@
 
 </div>
 
-<div id="modal" onclick="hideModal()">
-    <img id="modal-img">
+<div id="image-modal" onclick="hideImageModal()">
+    <img id="image-modal-img">
 </div>
 
 {% endblock %}
+
+{% include "genericModal.html" %}
