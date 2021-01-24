@@ -238,9 +238,13 @@ function saveRoute() {
         method: "POST"
     };
 
+    function redirect() {
+        window.location.href = "/routes/1"
+    }
+
     fetch(url, payload)
         .then(res => {
-            window.alert("Successfully saved the route!")
+            redirect()
             let icon = document.getElementById('save-icon')
             icon.setAttribute("src", "/static/images/saved-icon.svg")
             icon.onclick = () => 0

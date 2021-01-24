@@ -13,7 +13,7 @@
         <img id="verification-icon" src="/static/images/share-option.svg" onclick="showModal('Czy chcesz przekazać trasę do weryfikacji?', verification)" title="Zweryfikuj trasę"/>
     </button>
     <button class="btn btn-default btn-lg">
-        <a href="/route/{{ tourist_id }}/{{ route_id }}/documentation"><img id="verification-icon" src="/static/images/docs.svg" title="Dokumentacja"/></a>
+        <a href="/route/{{ tourist_id }}/{{ route_id }}/documentation"><img id="documentation-icon" src="/static/images/docs.svg" title="Dokumentacja"/></a>
     </button>
 </div>
 
@@ -34,6 +34,12 @@
     <script>
         document.getElementById('route-name').value = "{{ route_name }}"
         document.getElementById('save-icon').onclick = () => updateRoute({{ route_id }});
+    </script>
+{% else %}
+    <script>
+        document.getElementById('verification-icon').onclick = () => false;
+        document.getElementById('documentation-icon').onclick = () => false;
+        document.getElementById('delete-icon').onclick = () => false;
     </script>
 {% endif %}
 
