@@ -18,6 +18,6 @@ $( function() {
     const node = document.getElementById("tags")
     node.addEventListener("keydown", function(event) {
     if (event.key === "Enter")
-        addRedirect(node.value)
-
+        if (node.value in mapping.points || node.value in mapping.segments)
+            addRedirect(node.value)
 });
